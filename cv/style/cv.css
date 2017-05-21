@@ -1,0 +1,167 @@
+html {
+  font-family: 'Muli', sans-serif;
+}
+main {
+  /* width: 800px; */
+  /* margin: auto; */
+  padding: 20px 32px;
+  border-bottom: 60px solid #ddd;
+}
+p {
+  width: 700px;
+  text-align: justify;
+}
+a {
+  color: #BD3613;
+}
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+
+}
+h3 {
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.separator {
+  height: 20px;
+  background-color: #ddd;
+  margin: 50px -32px 0;
+}
+.separator-thin {
+  height: 1px;
+  background-color: #ddd;
+  margin: 14px -32px -16px;
+}
+.annotation {
+  font-size: 14px;
+}
+
+.contact {
+  margin-bottom: -26px;
+  font-size: 14px;
+}
+.title h1 {
+  margin: 0 0 6px;
+}
+.title h2 {
+  font-family: 'Droid Serif', Georgia, serif;
+  font-style: italic;
+  font-size: 16px;
+}
+
+section section header {
+  margin: 48px 0 0;
+}
+section section section header {
+  margin: 36px 0 -9px;
+}
+.tagged {
+  display: flex;
+}
+
+section h4 {
+  font-size: 20px;
+  /* font-weight: 700; */
+  margin: 0 0 6px;
+}
+.time-span {
+  font-size: 13px;
+  font-style: italic;
+  font-family: 'Droid Serif', Georgia, serif;
+}
+
+section section section {
+  margin-left: 24px;
+}
+section section section p {
+  width: 676px;
+}
+
+section h5 {
+  float: left;
+  font-size: 18px;
+  margin: 0 0 8px;
+  /* font-weight: 700; */
+}
+
+.tags {
+  display: block;
+  float: left;
+  padding: 0;
+  margin: 0 0 0 26px;
+}
+.tags li {
+  display: block;
+  float: left;
+  background-color: #819090;
+  padding: 4px 5px 5px;
+  color: white;
+  font-size: 12px;
+  border-radius: 5px;
+  margin: 0 5px 5px 0;
+}
+
+.source-link {
+  margin: 0 -12px 0 12px;
+}
+
+.tags .ruby,
+.tags .ruby-on-rails,
+.tags .rspec {
+  background-color: #D11C24;
+}
+.tags .javascript,
+.tags .jquery,
+.tags .angular,
+.tags .react,
+.tags .redux,
+.tags .flow,
+.tags .webpack {
+  background-color: #595AB7;
+}
+.tags .java,
+.tags .spring {
+  background-color: #217AC7;
+}
+.tags .php,
+.tags .cakephp {
+  background-color: #2aa198;
+}
+.tags .solr {
+  background-color: #738A05;
+}
+.tags .aws {
+  background-color: #A57706;
+}
+.tags .postgresql,
+.tags .mysql,
+.tags .sql {
+  background-color: #cb4b16;
+}
+.tags .snomed-ct {
+  background-color: #5975B7;
+}
+.tags .fhir {
+  background-color: #B77A59;
+}
+.tags .rest,
+.tags .soap {
+  background-color: #7FB759;
+}
+.tags .bpmn,
+.tags .uml {
+  background-color: #59A1B7;
+}
+.tags .c,
+.tags .c-plus-plus {
+  background-color: #B75973;
+}
+.tags .apache,
+.tags .nginx {
+  background-color: #C7AC21;
+}
+
+section section p {
+  clear: left;
+}
