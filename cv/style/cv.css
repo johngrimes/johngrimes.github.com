@@ -160,6 +160,10 @@ section h5 {
 .tags .nginx {
   background-color: #C7AC21;
 }
+.tags .linux,
+.tags .docker {
+  background-color: #819090;
+}
 
 section section p {
   clear: left;
