@@ -2,8 +2,6 @@ html {
   font-family: 'Muli', sans-serif;
 }
 main {
-  /* width: 800px; */
-  /* margin: auto; */
   padding: 20px 32px;
   border-bottom: 60px solid #ddd;
 }
@@ -48,6 +46,7 @@ h3 {
   font-family: 'Droid Serif', Georgia, serif;
   font-style: italic;
   font-size: 16px;
+  font-weight: normal;
 }
 
 section section header {
