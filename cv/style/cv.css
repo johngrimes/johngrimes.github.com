@@ -164,6 +164,9 @@ section h5 {
 .tags .docker {
   background-color: #819090;
 }
+.tags .puppet {
+  background-color: #7DB759;
+}
 
 section section p {
   clear: left;
