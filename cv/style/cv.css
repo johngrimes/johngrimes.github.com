@@ -1,35 +1,54 @@
 html {
-  font-family: 'Muli', sans-serif;
+  font-family: "Muli", sans-serif;
+  background-color: #ddd;
 }
-main {
-  padding: 20px 32px;
+body > header {
+  padding: 20px 32px 50px;
+  background-color: white;
+  position: relative;
+}
+body > main {
   border-bottom: 60px solid #ddd;
 }
-p {
-  width: 700px;
-  text-align: justify;
+body > header,
+body > main {
+  box-sizing: border-box;
+  max-width: 1500px;
 }
 a {
-  color: #BD3613;
+  color: #bd3613;
 }
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-weight: 600;
-
 }
 h3 {
   font-size: 16px;
   text-transform: uppercase;
   letter-spacing: 0.1em;
 }
+.avatar.my-avatar {
+  position: absolute;
+  top: 16px;
+  right: 32px;
+}
+.avatar {
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.1), 0 0 0 rgba(16, 22, 26, 0),
+    0 1px 1px rgba(16, 22, 26, 0.2);
+}
 .separator {
   height: 20px;
   background-color: #ddd;
-  margin: 50px -32px 0;
 }
 .separator-thin {
   height: 1px;
   background-color: #ddd;
-  margin: 14px -32px -16px;
+  margin: 14px 0;
 }
 .annotation {
   font-size: 14px;
@@ -43,14 +62,36 @@ h3 {
   margin: 0 0 6px;
 }
 .title h2 {
-  font-family: 'Droid Serif', Georgia, serif;
+  font-family: "Droid Serif", Georgia, serif;
   font-style: italic;
   font-size: 16px;
   font-weight: normal;
 }
 
+main > section {
+  float: left;
+  box-sizing: border-box;
+  background-color: white;
+}
+
+main > section > header,
+main > section > section {
+  padding: 0 32px;
+}
+
+section#experience {
+  width: 65%;
+  border-right: 20px solid #ddd;
+  padding-bottom: 20px;
+}
+
+section#recommendations {
+  width: 35%;
+  padding-bottom: 20px;
+}
+
 section section header {
-  margin: 48px 0 0;
+  margin: 28px 0 0;
 }
 section section section header {
   margin: 36px 0 -9px;
@@ -61,34 +102,40 @@ section section section header {
 
 section h4 {
   font-size: 20px;
-  /* font-weight: 700; */
   margin: 0 0 6px;
 }
 .time-span {
   font-size: 13px;
   font-style: italic;
-  font-family: 'Droid Serif', Georgia, serif;
+  font-family: "Droid Serif", Georgia, serif;
 }
 
 section section section {
   margin-left: 24px;
-}
-section section section p {
-  width: 676px;
 }
 
 section h5 {
   float: left;
   font-size: 18px;
   margin: 0 0 8px;
-  /* font-weight: 700; */
+  white-space: nowrap;
+}
+section p {
+  line-height: 1.6em;
+}
+
+section .separator {
+  margin-top: 30px;
+}
+
+.clear {
+  clear: both;
 }
 
 .tags {
-  display: block;
-  float: left;
+  display: flex;
   padding: 0;
-  margin: 0 0 0 26px;
+  margin: 0;
 }
 .tags li {
   display: block;
@@ -100,15 +147,40 @@ section h5 {
   border-radius: 5px;
   margin: 0 5px 5px 0;
 }
+header .tags {
+  margin-left: 26px;
+}
+
+main > section > section > .tags,
+main > section > section > header > .tags {
+  margin: 4px 0;
+}
 
 .source-link {
   margin: 0 -12px 0 12px;
+  width: 47px;
+}
+
+.tags .architecture,
+.tags .software-development,
+.tags .product-management,
+.tags .requirements,
+.tags .project-management,
+.tags .systems-administration,
+.tags .stakeholder-engagement,
+.tags .data-analysis,
+.tags .project-management,
+.tags .data-warehousing,
+.tags .reporting,
+.tags .information-architecture,
+.tags .data-modelling {
+  background-color: #217ac7;
 }
 
 .tags .ruby,
 .tags .ruby-on-rails,
 .tags .rspec {
-  background-color: #D11C24;
+  background-color: #d11c24;
 }
 .tags .javascript,
 .tags .jquery,
@@ -116,22 +188,26 @@ section h5 {
 .tags .react,
 .tags .redux,
 .tags .flow,
+.tags .node,
+.tags .express,
+.tags .jest,
+.tags .d3,
 .tags .webpack {
-  background-color: #595AB7;
+  background-color: #595ab7;
 }
 .tags .java,
 .tags .spring {
-  background-color: #217AC7;
+  background-color: #738a05;
 }
 .tags .php,
 .tags .cakephp {
   background-color: #2aa198;
 }
 .tags .solr {
-  background-color: #738A05;
+  background-color: #738a05;
 }
 .tags .aws {
-  background-color: #A57706;
+  background-color: #a57706;
 }
 .tags .postgresql,
 .tags .mysql,
@@ -139,35 +215,52 @@ section h5 {
   background-color: #cb4b16;
 }
 .tags .snomed-ct {
-  background-color: #5975B7;
+  background-color: #5975b7;
 }
 .tags .fhir {
-  background-color: #B77A59;
+  background-color: #b77a59;
 }
 .tags .rest,
 .tags .soap {
-  background-color: #7FB759;
+  background-color: #7fb759;
 }
 .tags .bpmn,
 .tags .uml {
-  background-color: #59A1B7;
+  background-color: #59a1b7;
 }
 .tags .c,
 .tags .c-plus-plus {
-  background-color: #B75973;
+  background-color: #b75973;
 }
 .tags .apache,
 .tags .nginx {
-  background-color: #C7AC21;
+  background-color: #c7ac21;
 }
 .tags .linux,
 .tags .docker {
   background-color: #819090;
 }
 .tags .puppet {
-  background-color: #7DB759;
+  background-color: #7db759;
 }
 
 section section p {
   clear: left;
+}
+
+.recommendation-content {
+  margin-bottom: 20px;
+}
+.recommendation-name {
+  font-weight: bold;
+  margin-bottom: 3px;
+}
+.recommendation-date {
+  color: #666;
+  margin-top: 6px;
+  font-size: 12px;
+}
+.recommendation .avatar {
+  float: left;
+  margin-right: 16px;
 }

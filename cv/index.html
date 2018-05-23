@@ -1,328 +1,504 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Curriculum Vitae &ndash; John Grimes</title>
-    <link rel="stylesheet" href="style/base.css" />
-    <link rel="stylesheet" href="style/cv.css" />
-    <link href="https://fonts.googleapis.com/css?family=Droid+Serif:400i|Muli:400,600" rel="stylesheet">
-  </head>
-  <body>
-    <main>
-      <hgroup class="title">
-        <h1>John Grimes</h1>
-        <h2>Curriculum Vitae</h2>
-      </hgroup>
-      <p class="contact"><a href="mailto:john@grimes.id.au">email</a> &middot; <a href="https://github.com/johngrimes">github</a> &middot; <a href="https://linkedin.com/in/johngrimes">linkedin</a></p>
-      <div class="separator"></div>
-      <section id="experience">
-        <header>
-          <h3>Experience</h3>
+
+<head>
+  <title>John Grimes &ndash; Curriculum Vitae</title>
+  <link rel="stylesheet" href="style/base.css" />
+  <link rel="stylesheet" href="style/cv.css" />
+  <link href="https://fonts.googleapis.com/css?family=Droid+Serif:400i|Muli:400,600" rel="stylesheet">
+  <base target="_blank" />
+</head>
+
+<body>
+  <header>
+    <hgroup class="title">
+      <h1>John Grimes</h1>
+      <h2>Curriculum Vitae</h2>
+    </hgroup>
+    <p class="contact">
+      <a href="mailto:john@grimes.id.au">email</a> &middot;
+      <a href="https://github.com/johngrimes">github</a> &middot;
+      <a href="https://www.hackerrank.com/johngrimes">hackerrank</a> &middot;
+      <a href="https://linkedin.com/in/johngrimes">linkedin</a>
+    </p>
+    <img class="avatar my-avatar" src="img/avatar.jpg" width="120" height="120" />
+  </header>
+  <main>
+    <div class="separator"></div>
+    <section id="experience">
+      <header>
+        <h3>Experience</h3>
+      </header>
+      <div class="separator-thin"></div>
+      <section>
+        <header class="tagged">
+          <h4>Lead Architect @
+            <a href="https://www.digitalhealth.gov.au/">Australian Digital Health Agency</a>
+          </h4>
         </header>
-        <div class="separator-thin"></div>
+        <ul class="tags">
+          <li class="architecture">Solution Architecture</li>
+          <li class="software-development">Software Development</li>
+          <li class="product-management">Product Management</li>
+          <li class="requirements">Requirements</li>
+        </ul>
+        <div class="time-span">May 2015 &ndash; present</div>
+        <p>Supporting the development of tooling for the Clinical Terminology function at the Agency, which includes the National
+          Release Centre for SNOMED CT.</p>
         <section>
           <header class="tagged">
-            <h4>DealView <span class="annotation">(WIP)</span></h4>
+            <h5>
+              <a href="https://browse.medserve.online">Polecat</a>
+            </h5>
+            <a class="source-link" href="https://github.com/AuDigitalHealth/polecat">
+              <img src="img/github.svg" width="24" height="24" alt="Source code" />
+            </a>
             <ul class="tags">
               <li class="javascript">JavaScript</li>
               <li class="react">React</li>
               <li class="redux">Redux</li>
-              <li class="flow">Flow</li>
-              <li class="webpack">Webpack</li>
+              <li class="d3">D3</li>
+              <li class="jest">Jest</li>
+              <li class="fhir">FHIR</li>
+              <li class="docker">Docker</li>
             </ul>
           </header>
-          <p>DealView is a tool for financial decision-making.</p>
-          <p>It allows you to examine your financial position at any point in the future, based upon your current assets, liabilities and cash flows, and forecasted changes to these.</p>
-          <p>It also allows you to configure different financial scenarios, and compare them based on their effect upon your overall position in the future.</p>
+          <p>Pure client-side application for browsing concepts within the Australian Medicines Terminology (AMT), using the
+            interface provided by
+            <a href="https://medserve.online">Medserve</a>, a FHIR medications server.</p>
         </section>
-        <div class="separator"></div>
-        <section>
-          <header>
-            <h4>Lead Architect @ <a href="https://www.digitalhealth.gov.au/">Australian Digital Health Agency</a></h4>
-            <div class="time-span">May 2015 &ndash; present</div>
-          </header>
-          <p>Supporting the development of tooling for the Clinical Terminology and Informatics functions at the Agency.</p>
-          <section>
-            <header class="tagged">
-              <h5><a href="https://www.healthterminologies.gov.au/">National Clinical Terminology Service</a></h5>
-              <ul class="tags">
-                <li class="architecture">Solution Architecture</li>
-                <li class="agile">Agile</li>
-                <li class="java">Java</li>
-                <li class="spring">Spring</li>
-                <li class="javascript">JavaScript</li>
-                <li class="angular">Angular</li>
-                <li class="snomed-ct">SNOMED CT</li>
-                <li class="fhir">FHIR</li>
-                <li class="docker">Docker</li>
-              </ul>
-            </header>
-            <p>A portal, terminology server and syndication service for the distribution of standard clinical terminologies in Australia.</p>
-          </section>
-          <section>
-            <header class="tagged">
-              <h5>National Technical Registry Service</h5>
-              <ul class="tags">
-                <li class="requirements">Requirements</li>
-                <li class="architecture">Solution Architecture</li>
-                <li class="agile">Agile</li>
-                <li class="rest">REST</li>
-              </ul>
-            </header>
-            <p>A definitional metadata repository for technical artefacts relating to e-health interoperability specifications.</p>
-          </section>
-        </section>
-        <div class="separator"></div>
-        <section>
-          <header>
-            <h4>Lead Consultant @ <a href="http://centralpetroleum.com.au/">Central Petroleum</a></h4>
-            <div class="time-span">Jul 2015 &ndash; Jan 2016</div>
-          </header>
-          <p>Responsible for the transition of ownership of the Mereenie oil and gas field from an information systems perspective.</p>
-        </section>
-        <div class="separator"></div>
-        <section>
-          <header>
-            <h4>Consultant @ <a href="https://mojosoup.com.au/">Mojo Soup</a></h4>
-            <div class="time-span">Mar 2012 &ndash; Nov 2016</div>
-          </header>
-          <p>Responsible for the development of the back-end for the Soup Mail product, and for the operation of the service in production.</p>
-          <section>
-            <header class="tagged">
-              <h5><a href="https://www.soupmail.com/">Soup Mail</a></h5>
-              <ul class="tags">
-                <li class="ruby">Ruby</li>
-                <li class="ruby-on-rails">Ruby on Rails</li>
-                <li class="solr">Solr</li>
-                <li class="linux">Linux</li>
-                <li class="aws">Amazon Web Services</li>
-                <li class="puppet">Puppet</li>
-              </ul>
-            </header>
-            <p>Soup Mail is cloud-based SaaS solution for sharing and syncing emails within teams.</p>
-            <p>Using either an Outlook add-in, or IMAP / EWS connectivity, Soup Mail allows emails to be filed into a central location with features such as full-text search, tagging and fine-grained permissions control.</p>
-          </section>
-        </section>
-        <div class="separator"></div>
-        <section>
-          <header>
-            <h4>Business Analyst @ <a href="https://web.archive.org/web/20160327203629/http://www.nehta.gov.au/">National E-Health Transition Authority</a></h4>
-            <div class="time-span">Dec 2010 &ndash; Dec 2011</div>
-          </header>
-          <p>Responsible for stakeholder engagement and requirements analysis activities relating to the introduction of the national e-health record for all Australians, a $470M program of work.</p>
-          <p>Facilitated agreement upon a business process for the pathology industry to start sending copies of pathology result reports to the PCEHR.</p>
-          <p>Participated in the design of a national infrastructure service and governance process for interoperability of clinical documents.</p>
-          <section>
-            <header class="tagged">
-              <h5>Personally Controlled Electronic Health Record</h5>
-              <ul class="tags">
-                <li class="requirements">Requirements</li>
-                <li class="stakeholder-engagement">Stakeholder Engagement</li>
-                <li class="bpmn">BPMN</li>
-              </ul>
-            </header>
-            <p>Introduction of the national e-health record for all Australians.</p>
-          </section>
-        </section>
-        <div class="separator"></div>
         <section>
           <header class="tagged">
-            <h4>T-Minus</h4>
-            <a class="source-link" href="https://github.com/johngrimes/t-minus"><img src="img/github.svg" width="24" height="24" alt="Source code"/></a>
+            <h5>
+              <a href="https://healthterminologies.gov.au/fhir/CodeSystem">Hotspot</a>
+            </h5>
+            <a class="source-link" href="https://github.com/AuDigitalHealth/hotspot">
+              <img src="img/github.svg" width="24" height="24" alt="Source code" />
+            </a>
+            <ul class="tags">
+              <li class="javascript">JavaScript</li>
+              <li class="react">React</li>
+              <li class="node">Node</li>
+              <li class="express">Express</li>
+              <li class="jest">Jest</li>
+              <li class="fhir">FHIR</li>
+              <li class="docker">Docker</li>
+            </ul>
+          </header>
+          <p>Facade that sits in front of a FHIR terminology server and provides a human-friendly, browseable representation
+            of the raw FHIR resources. Designed for use in conjunction with FHIR implementation guides, which includes links
+            to terminology bindings which can be resolved by a FHIR terminology server.</p>
+        </section>
+        <section>
+          <header class="tagged">
+            <h5>
+              Serge
+            </h5>
+            <ul class="tags">
+              <li class="java">Java</li>
+              <li class="spring">Spring</li>
+              <li class="javascript">JavaScript</li>
+              <li class="angular">Angular</li>
+              <li class="fhir">FHIR</li>
+              <li class="docker">Docker</li>
+            </ul>
+          </header>
+          <p>Internal tool providing automatic import and harmonisation of data feeds from the Therapeutic Goods Administration
+            (TGA) and the Pharmeceutical Benefits Scheme, for the purpose of assisting terminology analysts keep the Australian
+            Medicines Terminology (AMT) up to date as new medicines come on to the market.</p>
+        </section>
+        <section>
+          <header class="tagged">
+            <h5>
+              <a href="https://www.healthterminologies.gov.au/">National Clinical Terminology Service</a>
+            </h5>
+            <ul class="tags">
+              <li class="java">Java</li>
+              <li class="spring">Spring</li>
+              <li class="javascript">JavaScript</li>
+              <li class="angular">Angular</li>
+              <li class="snomed-ct">SNOMED CT</li>
+              <li class="fhir">FHIR</li>
+              <li class="docker">Docker</li>
+              <li class="aws">AWS</li>
+            </ul>
+          </header>
+          <p>A portal, terminology server and syndication service for the distribution of standard clinical terminologies in
+            Australia.
+          </p>
+        </section>
+        <section>
+          <header class="tagged">
+            <h5>National Technical Registry Service</h5>
+            <ul class="tags">
+              <li class="dotnet">.NET</li>
+              <li class="dotnet-webapi">.NET Web API</li>
+              <li class="javascript">JavaScript</li>
+              <li class="angular">Angular</li>
+            </ul>
+          </header>
+          <p>A definitional metadata repository for technical artefacts relating to e-health interoperability specifications.</p>
+        </section>
+        <section>
+          <header class="tagged">
+            <h5>
+              <a href="https://github.com/AuDigitalHealth">Agency Open Source Program</a>
+            </h5>
+            <a class="source-link" href="https://github.com/AuDigitalHealth">
+              <img src="img/github.svg" width="24" height="24" alt="GitHub page" />
+            </a>
+          </header>
+          <p>Played an integral part in promoting the idea within the organisation, designing the supporting business processes
+            and achieving approval to release six existing code bases as open source repositories on the Agency GitHub profile,
+            licensed under Apache 2.0.
+          </p>
+        </section>
+      </section>
+      <div class="separator"></div>
+      <section>
+        <header>
+          <h4>Lead Consultant @
+            <a href="http://centralpetroleum.com.au/">Central Petroleum</a>
+          </h4>
+          <ul class="tags">
+            <li class="project-management">Project Management</li>
+            <li class="architecture">Solution Architecture</li>
+          </ul>
+          <div class="time-span">Jul 2015 &ndash; Jan 2016</div>
+        </header>
+        <p>Responsible for the transition of ownership of the
+          <a href="http://centralpetroleum.com.au/our-business/our-licence-areas/amadeus/mereenie-oil-and-gas-field-ol4-ol5/">Mereenie oil and gas field</a> from an information systems perspective.</p>
+      </section>
+      <div class="separator"></div>
+      <section>
+        <header>
+          <h4>Consultant @
+            <a href="https://mojosoup.com.au/">Mojo Soup</a>
+          </h4>
+          <ul class="tags">
+            <li class="software-development">Software Development</li>
+            <li class="systems-administration">Systems Administration</li>
+          </ul>
+          <div class="time-span">Mar 2012 &ndash; Nov 2016</div>
+        </header>
+        <p>Responsible for the development of the back-end for the Soup Mail product, and for the operation of the service in
+          production.
+        </p>
+        <section>
+          <header class="tagged">
+            <h5>
+              <a href="https://www.soupmail.com/">Soup Mail</a>
+            </h5>
             <ul class="tags">
               <li class="ruby">Ruby</li>
               <li class="ruby-on-rails">Ruby on Rails</li>
-              <li class="open-source">Open Source</li>
+              <li class="solr">Solr</li>
+              <li class="linux">Linux</li>
+              <li class="aws">AWS</li>
+              <li class="puppet">Puppet</li>
             </ul>
           </header>
-          <p>T-Minus is a Ruby gem that adds an instant prelaunch page to any Rails application.</p>
-          <p>The prelaunch page also includes a form to allow users to subscribe to updates, which integrates with Campaign Monitor for management of email lists.</p>
+          <p>Soup Mail is cloud-based SaaS solution for sharing and syncing emails within teams.</p>
+          <p>Using either an Outlook add-in, or IMAP / EWS connectivity, Soup Mail allows emails to be filed into a central
+            location with features such as full-text search, tagging and fine-grained permissions control.</p>
         </section>
-        <div class="separator"></div>
+      </section>
+      <div class="separator"></div>
+      <section>
+        <header>
+          <h4>Business Analyst @
+            <a href="https://web.archive.org/web/20160327203629/http://www.nehta.gov.au/">National E-Health Transition Authority</a>
+          </h4>
+          <ul class="tags">
+            <li class="requirements">Requirements</li>
+            <li class="stakeholder-engagement">Stakeholder Engagement</li>
+          </ul>
+          <div class="time-span">Dec 2010 &ndash; Dec 2011</div>
+        </header>
+        <p>Responsible for stakeholder engagement and requirements analysis activities relating to the introduction of the national
+          e-health record for all Australians, a $470M program of work.</p>
+        <p>Facilitated agreement upon a business process for the pathology industry to start sending copies of pathology result
+          reports to the PCEHR.</p>
+        <p>Participated in the design of a national infrastructure service and governance process for interoperability of clinical
+          documents.
+        </p>
         <section>
           <header class="tagged">
-            <h4><a href="https://web.archive.org/web/20151106082900/http://typefront.com/">TypeFront</a></h4>
-            <a class="source-link" href="https://github.com/johngrimes/typefront"><img src="img/github.svg" width="24" height="24" alt="Source code"/></a>
+            <h5>Personally Controlled Electronic Health Record (PCEHR)</h5>
+          </header>
+          <p>Introduction of the national e-health record for all Australians.</p>
+        </section>
+      </section>
+      <div class="separator"></div>
+      <section>
+        <header>
+          <h4>Freelance Web Developer
+          </h4>
+          <ul class="tags">
+            <li class="software-development">Software Development</li>
+          </ul>
+          <div class="time-span">Dec 2009 &ndash; Dec 2010</div>
+        </header>
+        <p>Worked for a number of clients through my own company. This work mostly consisted of bespoke e-commerce web sites
+          written in Ruby on Rails.</p>
+      </section>
+      <div class="separator"></div>
+      <section>
+        <header class="tagged">
+          <h4>T-Minus</h4>
+          <a class="source-link" href="https://github.com/johngrimes/t-minus">
+            <img src="img/github.svg" width="24" height="24" alt="Source code" />
+          </a>
+          <ul class="tags">
+            <li class="ruby">Ruby</li>
+            <li class="ruby-on-rails">Ruby on Rails</li>
+          </ul>
+        </header>
+        <div class="time-span">Sep 2010 &ndash; Apr 2014</div>
+        <p>T-Minus is a Ruby gem that adds an instant prelaunch page to any Rails application.</p>
+        <p>The prelaunch page also includes a form to allow users to subscribe to updates, which integrates with Campaign Monitor
+          for management of email lists.</p>
+      </section>
+      <div class="separator"></div>
+      <section>
+        <header class="tagged">
+          <h4>
+            <a href="https://web.archive.org/web/20151106082900/http://typefront.com/">TypeFront</a>
+          </h4>
+          <a class="source-link" href="https://github.com/johngrimes/typefront">
+            <img src="img/github.svg" width="24" height="24" alt="Source code" />
+          </a>
+          <ul class="tags">
+            <li class="ruby">Ruby</li>
+            <li class="ruby-on-rails">Ruby on Rails</li>
+            <li class="rspec">RSpec</li>
+            <li class="javascript">JavaScript</li>
+            <li class="jquery">JQuery</li>
+            <li class="postgresql">PostgreSQL</li>
+            <li class="nginx">Nginx</li>
+            <li class="linux">Linux</li>
+          </ul>
+        </header>
+        <div class="time-span">Jul 2009 &ndash; Nov 2015</div>
+        <p>TypeFront is a font distribution platform for the web.</p>
+        <p>It provides authors with the tools to distribute fonts with their web sites in a way that gives them control over
+          the domains that include their font files, and makes it easier for them comply with font licensing.</p>
+        <p>TypeFront also provides font sellers with infrastructure to enable the sale of hosted solutions to their customers,
+          giving them the ability to expand their pricing model beyond once-off sales of font licenses.</p>
+      </section>
+      <div class="separator"></div>
+      <section>
+        <header>
+          <h4>Web Developer @
+            <a href="https://web.archive.org/web/20100208104036/http://thrudigital.com">thrudigital</a>
+          </h4>
+          <ul class="tags">
+            <li class="software-development">Software Development</li>
+          </ul>
+          <div class="time-span">Feb 2009 &ndash; Aug 2009</div>
+        </header>
+        <p>Working within a London-based digital agency, building bespoke social networks and social media marketing applications.</p>
+        <section>
+          <header class="tagged">
+            <h5>ClubPod</h5>
             <ul class="tags">
               <li class="ruby">Ruby</li>
               <li class="ruby-on-rails">Ruby on Rails</li>
-              <li class="rspec">RSpec</li>
               <li class="javascript">JavaScript</li>
               <li class="jquery">JQuery</li>
-              <li class="postgresql">PostgreSQL</li>
-              <li class="nginx">Nginx</li>
-              <li class="linux">Linux</li>
             </ul>
           </header>
-          <p>TypeFront is a font distribution platform for the web.</p>
-          <p>It provides authors with the tools to distribute fonts with their web sites in a way that gives them control over the domains that include their font files, and makes it easier for them comply with font licensing.</p>
-          <p>TypeFront also provides font sellers with infrastructure to enable the sale of hosted solutions to their customers, giving them the ability to expand their pricing model beyond once-off sales of font licenses.</p>
+          <p>An invite-only social network for members of exclusive golf clubs.</p>
         </section>
-        <div class="separator"></div>
-        <section>
-          <header>
-            <h4>Web Developer @ <a href="https://web.archive.org/web/20100208104036/http://thrudigital.com">thruDigital</a></h4>
-            <div class="time-span">Feb 2009 &ndash; Aug 2009</div>
-          </header>
-          <p>Working within a London-based digital agency, building bespoke social networks and social media marketing applications.</p>
-          <section>
-            <header class="tagged">
-              <h5>ClubPod</h5>
-              <ul class="tags">
-                <li class="ruby">Ruby</li>
-                <li class="ruby-on-rails">Ruby on Rails</li>
-                <li class="javascript">JavaScript</li>
-                <li class="jquery">JQuery</li>
-              </ul>
-            </header>
-            <p>An invite-only social network for members of exclusive golf clubs.</p>
-          </section>
-          <section>
-            <header class="tagged">
-              <h5>The Apprentice UK</h5>
-              <ul class="tags">
-                <li class="php">PHP</li>
-                <li class="cakephp">CakePHP</li>
-                <li class="javascript">JavaScript</li>
-                <li class="jquery">JQuery</li>
-              </ul>
-            </header>
-            <p>A web site that consumed the Twitter API in order to aggregate people's votes on who they thought was going to be eliminated in the next upcoming episode of The Apprentice.</p>
-          </section>
-        </section>
-        <div class="separator"></div>
         <section>
           <header class="tagged">
-            <h4><a href="https://web.archive.org/web/20141218021805/http://rosettasaurus.com/">Rosettasaurus</a></h4>
-            <a class="source-link" href="https://github.com/johngrimes/rosettasaurus"><img src="img/github.svg" width="24" height="24" alt="Source code"/></a>
+            <h5>The Apprentice UK</h5>
             <ul class="tags">
-              <li class="ruby">Ruby</li>
-              <li class="ruby-on-rails">Ruby on Rails</li>
+              <li class="php">PHP</li>
+              <li class="cakephp">CakePHP</li>
               <li class="javascript">JavaScript</li>
               <li class="jquery">JQuery</li>
-              <li class="mysql">MySQL</li>
-              <li class="linux">Linux</li>
             </ul>
           </header>
-          <p>Rosettasaurus is a multilingual sentence wiktionary.</p>
-          <p>It offers an alternative to a translation dictionary by offering translations at the sentence or phrase level, instead of the word level.</p>
-          <p>It also functions like a wiki, allowing translations to be edited and maintained by the user community.</p>
+          <p>A web site that consumed the Twitter API in order to aggregate people's votes on who they thought was going to
+            be eliminated in the next upcoming episode of The Apprentice.</p>
         </section>
-        <div class="separator"></div>
+      </section>
+      <div class="separator"></div>
+      <section>
+        <header class="tagged">
+          <h4>
+            <a href="https://web.archive.org/web/20141218021805/http://rosettasaurus.com/">Rosettasaurus</a>
+          </h4>
+          <a class="source-link" href="https://github.com/johngrimes/rosettasaurus">
+            <img src="img/github.svg" width="24" height="24" alt="Source code" />
+          </a>
+          <ul class="tags">
+            <li class="ruby">Ruby</li>
+            <li class="ruby-on-rails">Ruby on Rails</li>
+            <li class="javascript">JavaScript</li>
+            <li class="jquery">JQuery</li>
+            <li class="mysql">MySQL</li>
+            <li class="linux">Linux</li>
+          </ul>
+        </header>
+        <div class="time-span">Apr &ndash; Jul 2009</div>
+        <p>Rosettasaurus is a multilingual sentence wiktionary.</p>
+        <p>It offers an alternative to a translation dictionary by offering translations at the sentence or phrase level, instead
+          of the word level.</p>
+        <p>It also functions like a wiki, allowing translations to be edited and maintained by the user community.</p>
+      </section>
+      <div class="separator"></div>
+      <section>
+        <header class="tagged">
+          <h4>
+            <a href="https://web.archive.org/web/20140209024557/http://www.blavel.com:80/">Blavel</a>
+          </h4>
+          <a class="source-link" href="https://github.com/johngrimes/blavel">
+            <img src="img/github.svg" width="24" height="24" alt="Source code" />
+          </a>
+          <ul class="tags">
+            <li class="ruby">Ruby</li>
+            <li class="ruby-on-rails">Ruby on Rails</li>
+            <li class="javascript">JavaScript</li>
+            <li class="jquery">JQuery</li>
+            <li class="sphinx">Sphinx</li>
+            <li class="mysql">MySQL</li>
+            <li class="linux">Linux</li>
+          </ul>
+        </header>
+        <div class="time-span">Mar 2008 &ndash; Dec 2017</div>
+        <p>Blavel is a travel blogging web site.</p>
+        <p>It allows users to upload posts and pictures, and geocode them to create maps of their travels.</p>
+        <p>It also features a messaging feature that allows travellers to keep up to date with their friends and family.</p>
+      </section>
+      <div class="separator"></div>
+      <section>
+        <header>
+          <h4>Business Analyst @
+            <a href="https://www.suncorp.com.au/">Suncorp</a>
+          </h4>
+          <ul class="tags">
+            <li class="requirements">Requirements</li>
+            <li class="data-analysis">Data Analysis</li>
+            <li class="project-management">Project Management</li>
+          </ul>
+          <div class="time-span">Mar 2007 &ndash; Jan 2008</div>
+        </header>
+        <p>Working in the data warehousing area on business intelligence solutions for retail and business banking lines of
+          business within Suncorp.</p>
         <section>
           <header class="tagged">
-            <h4><a href="https://web.archive.org/web/20140209024557/http://www.blavel.com:80/">Blavel</a></h4>
-            <a class="source-link" href="https://github.com/johngrimes/blavel"><img src="img/github.svg" width="24" height="24" alt="Source code"/></a>
+            <h5>Collateral Management System Acquisition</h5>
             <ul class="tags">
-              <li class="ruby">Ruby</li>
-              <li class="ruby-on-rails">Ruby on Rails</li>
-              <li class="javascript">JavaScript</li>
-              <li class="jquery">JQuery</li>
-              <li class="sphinx">Sphinx</li>
-              <li class="mysql">MySQL</li>
-              <li class="linux">Linux</li>
+              <li class="oracle">Oracle</li>
+              <li class="sql">SQL</li>
             </ul>
           </header>
-          <p>Blavel is a travel blogging web site.</p>
-          <p>It allows users to upload posts and pictures, and geocode them to create maps of their travels.</p>
-          <p>It also features a messaging feature that allows travellers to keep up to date with their friends and family.</p>
+          <p>A project to acquire a new centralised collateral management system into the banking data warehouse, for the purpose
+            of meeting the requirements of Basel II capital adequacy reporting.</p>
         </section>
-        <div class="separator"></div>
-        <section>
-          <header>
-            <h4>Business Analyst @ <a href="https://www.suncorp.com.au/">Suncorp</a></h4>
-            <div class="time-span">Mar 2007 &ndash; Jan 2008</div>
-          </header>
-          <p>Working in the data warehousing area on business intelligence solutions for retail and business banking lines of business within Suncorp.</p>
-          <section>
-            <header class="tagged">
-              <h5>Collateral Management System Acquisition</h5>
-              <ul class="tags">
-                <li class="requirements">Requirements</li>
-                <li class="project-management">Project Management</li>
-                <li class="agile">Agile</li>
-              </ul>
-            </header>
-            <p>A project to acquire a new centralised collateral management system into the banking data warehouse, for the purpose of meeting the requirements of Basel II capital adequacy reporting.</p>
-          </section>
-        </section>
-        <div class="separator"></div>
-        <section>
-          <header>
-            <h4>Business Analyst @ Shared Information Solutions, Queensland Government</h4>
-            <div class="time-span">Mar 2007 &ndash; Jan 2008</div>
-          </header>
-          <p>Working on the Business Intelligence Enterprise Reporting (BIER) project, on data warehousing solutions servicing a cluster of Queensland Government agencies.</p>
-          <p>Responsible for requirements analysis around the implementation of a data warehouse and analytical reporting system based on information gathered about young people being case managed through the youth justice system.</p>
-          <p>Worked closely with the ICMS (Integrated Case Management System) project to deliver on shared goals and manage interdependencies.</p>
-          <section>
-            <header class="tagged">
-              <h5>Analytics for Conditional Bail Programs</h5>
-              <ul class="tags">
-                <li class="requirements">Requirements</li>
-                <li class="data-warehousing">Data Warehousing</li>
-                <li class="reporting">Reporting</li>
-              </ul>
-            </header>
-            <p>Pilot of a data mart and cube analysis tool delivering analytics about young people on supervised conditional bail programs.</p>
-          </section>
-          <section>
-            <header class="tagged">
-              <h5>Integrated Client Management System</h5>
-              <ul class="tags">
-                <li class="requirements">Requirements</li>
-                <li class="data-warehousing">Data Warehousing</li>
-                <li class="reporting">Reporting</li>
-              </ul>
-            </header>
-            <p>Delivery of an system designed to solve the problems caused by insufficient information sharing between the Child Safety and Youth Justice functions within the Queensland Government.</p>
-          </section>
-        </section>
-        <div class="separator"></div>
-        <section>
-          <header>
-            <h4>Business Analyst @ <a href="https://www.dnrm.qld.gov.au/">Department of Natural Resources and Water</a></h4>
-            <div class="time-span">Aug 2006 &ndash; Nov 2006 (temporary secondment)</div>
-          </header>
-          <p>Working in Web and Publishing Services, assisting with the provision of internet and intranet-based information solutions for business areas across the department.</p>
-          <p>Prepared recommendations around the replacement of the analytics system used by the Department to monitor usage of its web assets.</p>
-          <p>Responsible for analysing requirements around the creation of a common set of state land applications used by external stakeholders to interact with the Department.</p>
-        </section>
-        <div class="separator"></div>
-        <section>
-          <header>
-            <h4>Information Officer @ <a href="https://www.dnrm.qld.gov.au/">Department of Natural Resources and Water</a></h4>
-            <div class="time-span">2005 &ndash; 2007</div>
-          </header>
-          <p>Worked in the Land Information area on information systems responsible for storing property boundaries, addressing, survey information and geographical information for Queensland.</p>
-          <section>
-            <header class="tagged">
-              <h5>Integrated Information Model</h5>
-              <ul class="tags">
-                <li class="data-modelling">Data Modelling</li>
-                <li class="ontologies">Ontologies</li>
-                <li class="uml">UML</li>
-                <li class="bpmn">BPMN</li>
-                <li class="java">Java</li>
-              </ul>
-            </header>
-            <p>Creation of an integrated information model across Queensland's legacy land information systems, which established a canonical model that could be used for future developments and integration efforts.</p>
-          </section>
-          <section>
-            <header>
-              <h5>Web Services Delivery</h5>
-              <ul class="tags">
-                <li class="requirements">Requirements</li>
-                <li class="solution-architecture">Solution Architecture</li>
-                <li class="soap">SOAP</li>
-              </ul>
-            </header>
-            <p>Establishment of a delivery environment for serving land information to clients via web services.</p>
-          </section>
-        </section>
-        <div class="separator"></div>
+      </section>
+      <div class="separator"></div>
+      <section>
+        <header>
+          <h4>Business Analyst @ Shared Information Solutions, Queensland Government</h4>
+          <ul class="tags">
+            <li class="requirements">Requirements</li>
+            <li class="data-analysis">Data Analysis</li>
+            <li class="data-warehousing">Data Warehousing</li>
+            <li class="reporting">Reporting</li>
+          </ul>
+          <div class="time-span">Mar 2007 &ndash; Jan 2008</div>
+        </header>
+        <p>Working on the Business Intelligence Enterprise Reporting (BIER) project, on data warehousing solutions servicing
+          a cluster of Queensland Government agencies.</p>
+        <p>Responsible for requirements analysis around the implementation of a data warehouse and analytical reporting system
+          based on information gathered about young people being case managed through the youth justice system.</p>
+        <p>Worked closely with the ICMS (Integrated Case Management System) project to deliver on shared goals and manage interdependencies.
+        </p>
         <section>
           <header class="tagged">
-            <h4>Bachelor of Information Technology, Griffith University</h4>
+            <h5>Analytics for Conditional Bail Programs</h5>
+          </header>
+          <p>Pilot of a data mart and cube analysis tool delivering analytics about young people on supervised conditional bail
+            programs.
+          </p>
+        </section>
+        <section>
+          <header class="tagged">
+            <h5>Integrated Client Management System</h5>
+          </header>
+          <p>Delivery of an system designed to solve the problems caused by insufficient information sharing between the Child
+            Safety and Youth Justice functions within the Queensland Government.</p>
+        </section>
+      </section>
+      <div class="separator"></div>
+      <section>
+        <header>
+          <h4>Business Analyst @
+            <a href="https://www.dnrm.qld.gov.au/">Department of Natural Resources and Water</a>
+          </h4>
+          <ul class="tags">
+            <li class="requirements">Requirements</li>
+            <li class="information-architecture">Information Architecture</li>
+            <li class="stakeholder-engagement">Stakeholder Engagement</li>
+          </ul>
+          <div class="time-span">Aug 2006 &ndash; Nov 2006 (temporary secondment)</div>
+        </header>
+        <p>Working in Web and Publishing Services, assisting with the provision of internet and intranet-based information solutions
+          for business areas across the department.</p>
+        <p>Prepared recommendations around the replacement of the analytics system used by the Department to monitor usage of
+          its web assets.</p>
+        <p>Responsible for analysing requirements around the creation of a common set of state land applications used by external
+          stakeholders to interact with the Department.</p>
+      </section>
+      <div class="separator"></div>
+      <section>
+        <header>
+          <h4>Information Officer @
+            <a href="https://www.dnrm.qld.gov.au/">Department of Natural Resources and Water</a>
+          </h4>
+          <ul class="tags">
+            <li class="requirements">Requirements</li>
+            <li class="data-modelling">Data Modelling</li>
+            <li class="software-development">Software Development</li>
+          </ul>
+          <div class="time-span">2005 &ndash; 2007</div>
+        </header>
+        <p>Worked in the Land Information area on information systems responsible for storing property boundaries, addressing,
+          survey information and geographical information for Queensland.</p>
+        <section>
+          <header class="tagged">
+            <h5>Integrated Information Model</h5>
+            <ul class="tags">
+              <li class="uml">UML</li>
+              <li class="bpmn">BPMN</li>
+              <li class="java">Java</li>
+            </ul>
+          </header>
+          <p>Creation of an integrated information model across Queensland's legacy land information systems, which established
+            a canonical model that could be used for future developments and integration efforts.</p>
+        </section>
+        <section>
+          <header class="tagged">
+            <h5>Web Services Delivery</h5>
+            <ul class="tags">
+              <li class="soap">SOAP</li>
+            </ul>
+          </header>
+          <p>Establishment of a delivery environment for serving land information to clients via web services.</p>
+        </section>
+      </section>
+      <div class="separator"></div>
+      <section>
+        <header class="tagged">
+          <h4>Bachelor of Information Technology, Griffith University</h4>
+        </header>
+        <div class="time-span">2000 &ndash; 2004</div>
+        <section>
+          <header class="tagged">
+            <h5>Coursework</h5>
             <ul class="tags">
               <li class="java">Java</li>
               <li class="c">C</li>
@@ -331,21 +507,236 @@
               <li class="linux">Linux</li>
             </ul>
           </header>
-          <div class="time-span">2000 &ndash; 2004</div>
-          <section>
-            <header>
-              <h5>Industry Project - Brickies.com.au</h5>
-              <ul class="tags">
-                <li class="php">PHP</li>
-                <li class="mysql">MySQL</li>
-                <li class="apache">Apache</li>
-                <li class="linux">Linux</li>
-              </ul>
-            </header>
-            <p>Year-long team project to deliver an online community site for the bricklaying trade.</p>
-          </section>
+        </section>
+        <section>
+          <header class="tagged">
+            <h5>Industry Project - Brickies.com.au</h5>
+            <ul class="tags">
+              <li class="php">PHP</li>
+              <li class="mysql">MySQL</li>
+              <li class="apache">Apache</li>
+              <li class="linux">Linux</li>
+            </ul>
+          </header>
+          <p>Year-long team project to deliver an online community site for the bricklaying trade.</p>
         </section>
       </section>
-    </main>
-  </body>
+    </section>
+    <section id="recommendations">
+      <header>
+        <h3>Recommendations</h3>
+      </header>
+      <div class="separator-thin"></div>
+      <section class="recommendation">
+        <div class="recommendation-content">
+          <p>John is one of those rare birds in the IT industry who can and does wear many hats all with equal alacrity and
+            expertise.
+          </p>
+          <p>John's output is of extremely high quality in all areas he works in, be that system architecture, design, development,
+            root cause and business analysis, to name a few.</p>
+          <p>I really enjoy working with people like John as they inspire and help lift your own game!</p>
+        </div>
+        <img class="avatar" src="img/simon.jpg" width="80" height="80" />
+        <div class="recommendation-name">
+          <a href="https://linkedin.com/in/simonhbrowne">Simon Browne</a>
+        </div>
+        <div class="recommendation-title">Project Manager at Australian Digital Health Agency</div>
+        <div class="recommendation-date">April 29, 2017</div>
+      </section>
+      <div class="separator"></div>
+      <section class="recommendation">
+        <div class="recommendation-content">
+          <p>John has been a great addition to the team, bringing his wealth of technical expertise.</p>
+          <p>He has a sound logical mind and works well with other technical people to break down issues into workable solutions.</p>
+          <p>As a BA he produces well documented specifications that a developer can actually use and testers can take as a
+            set of requirements.</p>
+          <p>Hope we can keep him with our team.</p>
+        </div>
+        <img class="avatar" src="img/phil.jpg" width="80" height="80" />
+        <div class="recommendation-name">
+          <a href="https://linkedin.com/in/philip-wilford-b013b58">Philip Wilford</a>
+        </div>
+        <div class="recommendation-title">Development & Technical Services Manager at NEHTA</div>
+        <div class="recommendation-date">June 15, 2016</div>
+      </section>
+      <div class="separator"></div>
+      <section class="recommendation">
+        <div class="recommendation-content">
+          <p>I had the pleasure to work with John across some fast-track IT projects.</p>
+          <p>John demonstrated a close attention to detail and managed these important projects against those aggressive timelines.
+            He utilizes his good analytical mind and broad knowledge base to create the necessary solutions.
+          </p>
+          <p>I strongly recommend John and hope to have the chance to work with him again.</p>
+        </div>
+        <img class="avatar" src="img/colin.jpg" width="80" height="80" />
+        <div class="recommendation-name">
+          <a href="https://www.linkedin.com/in/colin-green-48b5a26">Colin Green</a>
+        </div>
+        <div class="recommendation-title">Consultant at Central Petroleum Limited</div>
+        <div class="recommendation-date">June 8, 2016</div>
+      </section>
+      <div class="separator"></div>
+      <section class="recommendation">
+        <div class="recommendation-content">
+          <p>John Grimes and I worked together on two occasions at NEHTA. First, as part of the Australian National Health Record
+            (PCEHR / My Health Record) in 2011, and secondly as part of the National Clinical Terminology Service (NCTS)
+            and National Technical Registry Service (NTRS) national infrastructure projects in 2016.</p>
+          <p>John is that rare individual that possesses: broad technical knowledge, a strong delivery focus, professionalism,
+            attention to detail and above all friendliness and excellent communication skills.</p>
+          <p>He would be an asset to any organisation he is associated with and I would happily work with him again in the future.
+          </p>
+        </div>
+        <img class="avatar" src="img/reuben.jpg" width="80" height="80" />
+        <div class="recommendation-name">
+          <a href="https://linkedin.com/in/reubendaniels">Reuben Daniels</a>
+        </div>
+        <div class="recommendation-title">Lead Architect at NEHTA</div>
+        <div class="recommendation-date">June 7, 2016</div>
+      </section>
+      <div class="separator"></div>
+      <section class="recommendation">
+        <div class="recommendation-content">
+          <p>I've engaged John in several capacities over many years, both as a consultant and as a software architect & developer
+            in the creation of a significant SaaS solution. In each case and context, John has been brilliant to work with
+            and has not only delivered high quality products, but has contributed value well over and above expectations.
+            Further, the trust that I have developed in John throughout these engagements is a significant aspect of our
+            relationship.
+          </p>
+          <p>John's experience and deep expertise as a software architect, along with his considerable people skills and business
+            acumen, combine to make him an outstanding business partner and resource. These qualities are also evident in
+            the standards he has for his team members, and contribute to the quality of service on offer from Small Spark
+            as a whole.</p>
+        </div>
+        <img class="avatar" src="img/euan.jpg" width="80" height="80" />
+        <div class="recommendation-name">
+          <a href="https://linkedin.com/in/euankennedy">Euan Kennedy</a>
+        </div>
+        <div class="recommendation-title">Senior Consultant at Mojo Soup</div>
+        <div class="recommendation-date">February 3, 2015</div>
+      </section>
+      <div class="separator"></div>
+      <section class="recommendation">
+        <div class="recommendation-content">
+          <p>I had the great pleasure of working with John as a key member of the Template Service work stream managed by me
+            as part of the $470m Personally-Controlled Electronic Health Record (PCEHR) program.</p>
+          <p>John's diligence and accuracy in assessing and compiling requirements as well as his desire and ability to look
+            across and work beyond the fence of his immediate responsibility were corner stones for the success of this work
+            stream and the wider PCEHR program. John is not satisfied by taking care only of his directly assigned tasks
+            but always prides himself by ensuring consistency of his work with the work of the wider program.</p>
+        </div>
+        <img class="avatar" src="img/lars.jpg" width="80" height="80" />
+        <div class="recommendation-name">
+          <a href="https://linkedin.com/in/beckerlars">Lars Becker</a>
+        </div>
+        <div class="recommendation-title">e-Solutions Manager at NEHTA</div>
+        <div class="recommendation-date">February 21, 2012</div>
+      </section>
+      <div class="separator"></div>
+      <section class="recommendation">
+        <div class="recommendation-content">
+          <p>John is an intuitive business analyst who has demonstrated the ability to facilitate broad national stakeholder
+            requirement gathering forums and translate the feedback into detailed and precise architectural, business and
+            information requirements.</p>
+        </div>
+        <div class="recommendation-name">
+          <a href="https://linkedin.com/in/sean-holmes-5b380413">Sean Holmes</a>
+        </div>
+        <div class="recommendation-title">Program Manager, Continuity of Care and Diagnostic Services at NEHTA</div>
+        <div class="recommendation-date">January 22, 2012</div>
+      </section>
+      <div class="separator"></div>
+      <section class="recommendation">
+        <div class="recommendation-content">
+          <p>John was an excellent contibutor to the project that I led while he was at NEHTA. He has a wonderful capacity to
+            balance precision and pragmatism. He has a good contructive attitude and demonstrated a strong work ethic.</p>
+          <p>I would recommend John to any potential employer should he apply for a position similar to the one that he undertook
+            at NEHTA.</p>
+        </div>
+        <img class="avatar" src="img/roger.jpg" width="80" height="80" />
+        <div class="recommendation-name">
+          <a href="https://linkedin.com/in/roger-hewitt-9894a61">Roger Hewitt</a>
+        </div>
+        <div class="recommendation-title">Manager, Clinical Solutions Sustainability at NEHTA</div>
+        <div class="recommendation-date">January 21, 2012</div>
+      </section>
+      <div class="separator"></div>
+      <section class="recommendation">
+        <div class="recommendation-content">
+          <p>John is an excellent Business Analyst. He has a great work ethic, embraces his work with enthusiasm and is always
+            professional. His work is of a very high quality and he thinks through all the angles and possibilities.</p>
+          <p>John challenges the current status quo and is a positive change agent. He also has great stakeholder communication
+            and facilitation skills and is up for any challenge. I highly recommend him.</p>
+        </div>
+        <img class="avatar" src="img/paul.jpg" width="80" height="80" />
+        <div class="recommendation-name">
+          <a href="https://linkedin.com/in/paul-burnham">Paul Burnham</a>
+        </div>
+        <div class="recommendation-title">Solution Manager, PCEHR at NEHTA</div>
+        <div class="recommendation-date">August 10, 2011</div>
+      </section>
+      <div class="separator"></div>
+      <section class="recommendation">
+        <div class="recommendation-content">
+          <p>John is excellent developer with huge spectrum of knowledge around web technologies.</p>
+          <p>His is fluent in many web languages. His biggest strength comes before the implementation itself. He covers all
+            possible corners and scenarios so once the project is build it is very easy to hand the code. His analytic thinking
+            is exceptional.</p>
+          <p>Definitely one of the best developers I met but more importantly, good easy going, friendly guy.</p>
+        </div>
+        <img class="avatar" src="img/roman.jpg" width="80" height="80" />
+        <div class="recommendation-name">
+          <a href="https://linkedin.com/in/lewro">Roman Leinwather</a>
+        </div>
+        <div class="recommendation-title">Web Designer at thrudigital</div>
+        <div class="recommendation-date">January 26, 2010</div>
+      </section>
+      <div class="separator"></div>
+      <section class="recommendation">
+        <div class="recommendation-content">
+          <p>John is an insightful and detailed Information Analyst that was dedicated to producing a result that was appropriate
+            and accurate to the business requirements.</p>
+          <p>He was reliable and produced high quality documentation for technical and business audiences.</p>
+        </div>
+        <img class="avatar" src="img/damian.jpg" width="80" height="80" />
+        <div class="recommendation-name">
+          <a href="https://linkedin.com/in/lewro">Damian Trad</a>
+        </div>
+        <div class="recommendation-title">Senior Information Analyst at Suncorp</div>
+        <div class="recommendation-date">November 24, 2008</div>
+      </section>
+      <div class="separator"></div>
+      <section class="recommendation">
+        <div class="recommendation-content">
+          <p>John is highly skilled, enthusiastic, focused, professional and values open communication. John approaches his
+            work with a ‘can do’ attitude and completes all tasks efficiently.</p>
+          <p>John would be a valuable addition to any team.</p>
+        </div>
+        <div class="recommendation-name">
+          <a href="https://linkedin.com/in/triciadawson">Tricia Dawson</a>
+        </div>
+        <div class="recommendation-title">Business Intelligence Analyst at Shared Information Solutions, Department of Communities</div>
+        <div class="recommendation-date">May 12, 2008</div>
+      </section>
+      <div class="separator"></div>
+      <section class="recommendation">
+        <div class="recommendation-content">
+          <p>John worked as a Business Analyst on a business intelligence reporting project within SIS.</p>
+          <p>I found John to be a quiet achiever who was very thorough, enthusiastic and personable. He was considered popular
+            and was well regarded by both the business and technical areas for BA skills as well as his ability to rapidly
+            gain knowledge about business processes and relate potential project outcomes in business terms.
+          </p>
+          <p>I am pleased to be able to recommend John as a prospective employee or contractor.</p>
+        </div>
+        <img class="avatar" src="img/alan.jpg" width="80" height="80" />
+        <div class="recommendation-name">
+          <a href="https://linkedin.com/in/alan-dettrick-7308ba5">Alan Dettrick</a>
+        </div>
+        <div class="recommendation-title">Applications Manager at Shared Information Solutions, Department of Communities</div>
+        <div class="recommendation-date">April 22, 2008</div>
+      </section>
+    </section>
+    <div class="clear" />
+  </main>
+</body>
+
 </html>
