@@ -3,10 +3,9 @@ title: About
 layout: page
 ---
 
-Hello.
+Hello. My name is John.
 
-This is a simple blog that I have set up to document the process of creating a
-new web application for performing discounted cash flow analysis on investment
-options.
+You have happened upon my simple blog which I post some random thoughts to, very
+infrequently. Enjoy!
 
-Enjoy!
+If you are interested in hiring me, here's my [CV](/cv).
