@@ -1,23 +1,18 @@
+/* PAGE-WIDE STYLES */
+
 html {
   font-family: "Muli", sans-serif;
   background-color: #ddd;
 }
-body > header {
-  padding: 20px 32px 50px;
-  background-color: white;
-  position: relative;
-}
-body > main {
-  border-bottom: 60px solid #ddd;
-}
-body > header,
-body > main {
-  box-sizing: border-box;
-  max-width: 1500px;
-}
+
 a {
   color: #bd3613;
 }
+
+p {
+  margin: 0.9em 0;
+}
+
 h1,
 h2,
 h3,
@@ -26,241 +21,274 @@ h5,
 h6 {
   font-weight: 600;
 }
-h3 {
-  font-size: 16px;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-}
-.avatar.my-avatar {
-  position: absolute;
-  top: 16px;
-  right: 32px;
-}
+
 .avatar {
   border-radius: 50%;
   box-shadow: 0 0 0 1px rgba(16, 22, 26, 0.1), 0 0 0 rgba(16, 22, 26, 0),
     0 1px 1px rgba(16, 22, 26, 0.2);
 }
-.separator {
-  height: 20px;
-  background-color: #ddd;
-}
-.separator-thin {
-  height: 1px;
-  background-color: #ddd;
-  margin: 14px 0;
-}
-.annotation {
-  font-size: 14px;
-}
 
-.contact {
-  margin-bottom: -26px;
-  font-size: 14px;
-}
-.title h1 {
-  margin: 0 0 6px;
-}
-.title h2 {
-  font-family: "Droid Serif", Georgia, serif;
-  font-style: italic;
-  font-size: 16px;
-  font-weight: normal;
-}
-
-main > section {
-  float: left;
-  box-sizing: border-box;
-  background-color: white;
-}
-
-main > section > header,
-main > section > section {
-  padding: 0 32px;
-}
-
-section#experience {
-  width: 65%;
-  border-right: 20px solid #ddd;
-  padding-bottom: 20px;
-}
-
-section#recommendations {
-  width: 35%;
-  padding-bottom: 20px;
-}
-
-section section header {
-  margin: 28px 0 0;
-}
-section section section header {
-  margin: 36px 0 -9px;
-}
-.tagged {
-  display: flex;
-}
-
-section h4 {
-  font-size: 20px;
-  margin: 0 0 6px;
-}
 .time-span {
-  font-size: 13px;
+  font-size: 0.8em;
   font-style: italic;
   font-family: "Droid Serif", Georgia, serif;
+  margin-top: 0.5em;
 }
 
-section section section {
-  margin-left: 24px;
+p:first-of-type {
+  margin-top: 0;
 }
 
-section h5 {
-  float: left;
-  font-size: 18px;
-  margin: 0 0 8px;
-  white-space: nowrap;
-}
-section p {
-  line-height: 1.6em;
+p:last-of-type {
+  margin-bottom: 0;
 }
 
-section .separator {
-  margin-top: 30px;
-}
-
-.clear {
-  clear: both;
-}
+/* TAGS */
 
 .tags {
   display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
   padding: 0;
   margin: 0;
 }
+
 .tags li {
   display: block;
-  float: left;
   background-color: #819090;
-  padding: 4px 5px 5px;
+  padding: 0.4em 0.6em;
   color: white;
-  font-size: 12px;
-  border-radius: 5px;
-  margin: 0 5px 5px 0;
-}
-header .tags {
-  margin-left: 26px;
+  font-size: 0.75em;
+  border-radius: 0.4em;
+  margin: 0 0.4em 0.4em 0;
+  white-space: nowrap;
 }
 
-main > section > section > .tags,
-main > section > section > header > .tags {
-  margin: 4px 0;
-}
-
-.source-link {
-  margin: 0 -12px 0 12px;
-  width: 47px;
-}
-
-.tags .architecture,
-.tags .software-development,
-.tags .product-management,
-.tags .requirements,
-.tags .project-management,
-.tags .systems-administration,
-.tags .stakeholder-engagement,
-.tags .data-analysis,
-.tags .project-management,
-.tags .data-warehousing,
-.tags .reporting,
-.tags .information-architecture,
-.tags .data-modelling {
+.role-tags li {
   background-color: #217ac7;
 }
 
-.tags .ruby,
-.tags .ruby-on-rails,
-.tags .rspec {
+.tags .ruby {
   background-color: #d11c24;
 }
-.tags .javascript,
-.tags .jquery,
-.tags .angular,
-.tags .react,
-.tags .redux,
-.tags .flow,
-.tags .node,
-.tags .express,
-.tags .jest,
-.tags .d3,
-.tags .webpack {
+
+.tags .js {
   background-color: #595ab7;
 }
-.tags .java,
-.tags .spring {
+
+.tags .java {
   background-color: #738a05;
 }
-.tags .php,
-.tags .cakephp {
+
+.tags .php {
   background-color: #2aa198;
 }
-.tags .solr {
-  background-color: #738a05;
-}
-.tags .aws {
-  background-color: #a57706;
-}
-.tags .postgresql,
-.tags .mysql,
-.tags .sql {
+
+.tags .db {
   background-color: #cb4b16;
 }
+
 .tags .snomed-ct {
   background-color: #5975b7;
 }
+
 .tags .fhir {
   background-color: #b77a59;
 }
-.tags .rest,
-.tags .soap {
-  background-color: #7fb759;
-}
-.tags .bpmn,
-.tags .uml {
+
+.tags .modelling {
   background-color: #59a1b7;
 }
-.tags .c,
-.tags .c-plus-plus {
+
+.tags .c {
   background-color: #b75973;
 }
-.tags .apache,
-.tags .nginx {
+
+.tags .http {
   background-color: #c7ac21;
 }
-.tags .linux,
-.tags .docker {
+
+.tags .deploy {
   background-color: #819090;
 }
-.tags .puppet {
-  background-color: #7db759;
+
+/* MAIN LAYOUT */
+
+#header,
+#content {
+  box-sizing: border-box;
+  max-width: 94em;
 }
 
-section section p {
-  clear: left;
+/* PAGE HEADER */
+
+#header {
+  position: fixed;
+  width: 100%;
+  padding: 1.25em 2em 3em;
+  background-color: white;
+  height: 10.6em;
+  border-bottom: 1.25em solid #ddd;
 }
 
-.recommendation-content {
-  margin-bottom: 20px;
+#header .title h1 {
+  margin: 0 0 0.4em;
 }
-.recommendation-name {
+
+#header .title h2 {
+  font-family: "Droid Serif", Georgia, serif;
+  font-style: italic;
+  font-size: 1em;
+  font-weight: normal;
+}
+
+#header .contact {
+  margin-bottom: -0.6em;
+  font-size: 0.85em;
+}
+
+#header .my-avatar {
+  float: right;
+  position: relative;
+  top: -0.25em;
+  width: 7.5em;
+  height: 7.5em;
+}
+
+/* MAIN CONTENT AREA */
+
+#content {
+  padding-top: 10.6em;
+  grid-template: auto / 65% 35%;
+  display: grid;
+  width: 100%;
+}
+
+#content p {
+  line-height: 1.6em;
+}
+
+.facet header {
+  margin-bottom: 1em;
+}
+
+.facet > header {
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 0;
+}
+
+.facet > header > h3 {
+  font-size: 1em;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin: 0;
+}
+
+/* EXPERIENCE */
+
+#experience {
+  grid-column: 1 / 2;
+  border-right: 1.25em solid #ddd;
+}
+
+#experience h4 {
+  font-size: 1.25em;
+  margin: 0 0 0.6em;
+}
+
+#experience h5 {
+  font-size: 1.15em;
+  margin: 0 0 0.5em;
+  white-space: nowrap;
+}
+
+#experience > header {
+  padding: 1em 2em;
+  background-color: white;
+}
+
+#experience .position,
+#experience > .project {
+  padding: 2em;
+  background-color: white;
+  margin-bottom: 1.25em;
+}
+
+#experience > .project header,
+#experience > .position .project header {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#experience > .position .project header {
+  margin: 2em 0 0.5em;
+}
+
+#experience > .project header h4,
+#experience > .position .project header h5 {
+  margin-right: 1.5em;
+}
+
+#experience > .project header .source-link,
+#experience > .position .project header .source-link {
+  margin-right: 1em;
+  margin-left: -0.8em;
+}
+
+#experience > .position .project {
+  margin-left: 1.5em;
+}
+
+#experience > .project .time-span {
+  width: 100%;
+  margin: 0 0 1em;
+}
+
+/* RECOMMENDATIONS */
+
+#recommendations header {
+  padding: 1em 2em;
+  background-color: white;
+}
+
+.recommendation {
+  background-color: white;
+  padding: 2em;
+  margin-bottom: 1.25em;
+  overflow: hidden;
+}
+
+.recommendation .content {
+  margin-bottom: 2em;
+}
+
+.recommendation .name {
   font-weight: bold;
-  margin-bottom: 3px;
+  margin-bottom: 0.3em;
 }
-.recommendation-date {
+
+.recommendation .date {
   color: #666;
-  margin-top: 6px;
-  font-size: 12px;
+  margin-top: 0.8em;
+  font-size: 0.75em;
 }
+
 .recommendation .avatar {
   float: left;
-  margin-right: 16px;
+  margin-right: 1em;
+  width: 5em;
+  height: 5em;
+}
+
+section#recommendations .separator-thin {
+  margin-bottom: 0;
+}
+
+@media (max-device-width: 960px) {
+  #content {
+    display: block;
+  }
+  #experience {
+    border-right: 0;
+  }
 }
