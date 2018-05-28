@@ -292,7 +292,7 @@ p:last-of-type {
   height: 5em;
 }
 
-@media (max-device-width: 60em) {
+@media (max-device-width: 960px) and (-webkit-min-device-pixel-ratio: 2) {
   html {
     font-size: 13px;
   }
