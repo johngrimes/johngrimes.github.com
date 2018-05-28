@@ -4,7 +4,9 @@
   "main": "index.html",
   "author": "John Grimes",
   "license": "MIT",
-  "dependencies": {
-    "inline-resource": "^0.1.6"
+  "devDependencies": {
+    "inline-resource": "^0.1.6",
+    "stylelint": "^9.2.1",
+    "stylelint-config-recommended": "^2.1.0"
   }
 }
