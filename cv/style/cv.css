@@ -163,6 +163,16 @@ section > ul li {
   font-size: 0.85em;
 }
 
+#header .online-version {
+  font-size: 0.85em;
+  margin-top: 1.5em;
+}
+
+#header .contact .print,
+#header .online-version {
+  display: none;
+}
+
 #header .my-avatar {
   float: right;
   position: relative;
@@ -317,5 +327,91 @@ section > ul li {
 
   #experience {
     border-right: 0;
+  }
+}
+
+@media print {
+  html {
+    font-size: 13px;
+    -webkit-print-color-adjust: exact !important;
+  }
+
+  a {
+    color: black;
+    text-decoration: none;
+  }
+
+  .source-link {
+    display: none;
+  }
+
+  #header {
+    position: static;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 0;
+    padding: 1.25em 0 3em;
+    height: 11.6em;
+  }
+
+  #header .contact .web {
+    display: none;
+  }
+
+  #header .contact .print {
+    display: inline;
+  }
+
+  #header .online-version {
+    display: block;
+  }
+
+  #content {
+    display: block;
+    padding-top: 0;
+  }
+
+  #experience {
+    border-right: 0;
+  }
+
+  #experience header,
+  #recommendations header {
+    padding: 1em 0;
+  }
+
+  #experience .position,
+  #experience > .project {
+    padding: 1em 0 2em;
+    margin-bottom: 0;
+    border-bottom: 1px solid #ddd;
+  }
+
+  #experience > .position,
+  #experience .project {
+    page-break-inside: avoid;
+  }
+
+  #experience .position header {
+    margin-bottom: 0;
+  }
+
+  #experience > .project header {
+    margin-bottom: -0.5em;
+  }
+
+  #experience > .position .project header {
+    margin-bottom: -1em;
+    margin-top: 0.5em;
+  }
+
+  #recommendations {
+    page-break-before: always;
+  }
+
+  .recommendation {
+    padding: 2em 0;
+    margin-bottom: 0;
+    border-bottom: 1px solid #ddd;
+    page-break-inside: avoid;
   }
 }
