@@ -305,9 +305,16 @@ section > ul li {
   html {
     font-size: 13px;
   }
+
+  section > ul {
+    columns: 1;
+    list-style-position: outside;
+  }
+
   #content {
     display: block;
   }
+
   #experience {
     border-right: 0;
   }
