@@ -18,12 +18,12 @@ email: john@grimes.id.au
 description: "Getting it out to focus it within."
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://john.grimes.id.au" # the base hostname & protocol for your site, e.g.  http://example.com
-github_username:  johngrimes
+github_username: johngrimes
 
 # Build settings
 markdown: kramdown
 theme: minima
-gems:
+plugins:
   - jekyll-feed
 exclude:
   - Gemfile
