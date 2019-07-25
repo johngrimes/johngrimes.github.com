@@ -321,6 +321,10 @@ section > ul li {
     list-style-position: outside;
   }
 
+  #header {
+    border-bottom: 1px solid #ddd;
+  }
+
   #content {
     display: block;
   }
@@ -334,6 +338,11 @@ section > ul li {
   html {
     font-size: 13px;
     -webkit-print-color-adjust: exact !important;
+    background-color: transparent;
+  }
+
+  body {
+    margin: 0;
   }
 
   a {
@@ -345,11 +354,15 @@ section > ul li {
     display: none;
   }
 
+  .tags li {
+    padding: 0.1em 0.5em 0.2em;
+  }
+
   #header {
     position: static;
     border-bottom: 1px solid #ddd;
     margin-bottom: 0;
-    padding: 1.25em 0 3em;
+    padding: 0 0 3em;
     height: 11.6em;
   }
 
@@ -363,6 +376,11 @@ section > ul li {
 
   #header .online-version {
     display: block;
+  }
+
+  #header .avatar {
+    top: 0.1em;
+    right: 0.1em;
   }
 
   #content {
@@ -386,9 +404,13 @@ section > ul li {
     border-bottom: 1px solid #ddd;
   }
 
-  #experience > .position,
   #experience .project {
     page-break-inside: avoid;
+  }
+
+  #experience .project > header .tags {
+    position: relative !important;
+    top: 0.28em !important;
   }
 
   #experience .position header {
@@ -397,6 +419,11 @@ section > ul li {
 
   #experience > .project header {
     margin-bottom: -0.5em;
+  }
+
+  #experience .project header .tags {
+    position: relative;
+    top: 0.15em;
   }
 
   #experience > .position .project header {
