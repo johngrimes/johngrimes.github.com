@@ -1,0 +1,554 @@
+<!doctype html>
+<!-- Author: John Grimes -->
+<html lang="en-AU">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>John Grimes - Health Data Interop + Analytics</title>
+    <meta
+      name="description"
+      content="John Grimes builds software and standards that make health data usable for analysis: FHIR, clinical terminology and large-scale data processing. Creator of Pathling and co-lead of HL7 SQL on FHIR."
+    />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="canonical" href="https://john.grimes.id.au/" />
+    <meta property="og:type" content="profile" />
+    <meta property="og:url" content="https://john.grimes.id.au/" />
+    <meta
+      property="og:title"
+      content="John Grimes - Health Data Interop + Analytics"
+    />
+    <meta
+      property="og:description"
+      content="Creator of Pathling and co-lead of HL7 SQL on FHIR."
+    />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link
+      rel="preload"
+      href="fonts/SourceSerif4.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="fonts/SourceSans3.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>John Grimes</h1>
+      <p class="headline">Health Data Interop + Analytics</p>
+      <p class="contact">
+        <span>Brisbane, Australia</span>
+        <a href="mailto:john@grimes.id.au">john@grimes.id.au</a>
+        <a href="https://github.com/johngrimes">github.com/johngrimes</a>
+        <a href="https://www.linkedin.com/in/johngrimes"
+          >linkedin.com/in/johngrimes</a
+        >
+        <a href="https://orcid.org/0000-0002-9575-7641"
+          >orcid.org/0000-0002-9575-7641</a
+        >
+      </p>
+    </header>
+
+    <main>
+      <section id="profile" aria-labelledby="profile-heading">
+        <h2 id="profile-heading">Profile</h2>
+        <div class="body">
+          <p class="lede">
+            I design and build software and standards that make health data
+            usable for analysis. My work combines <abbr>FHIR</abbr>, clinical
+            terminology and large-scale data processing. I created Pathling, an
+            open-source toolkit for <abbr>FHIR</abbr> analytics, and I co-lead
+            the HL7 <abbr>SQL</abbr> on <abbr>FHIR</abbr> specification.
+          </p>
+          <p>
+            I have worked in Australian digital health for over fifteen years,
+            including as lead architect of the National Clinical Terminology
+            Service and on the requirements for My Health Record. Before that I
+            built and ran web products. I write the specification, the code and
+            the tests, and I pay close attention to the details that make a tool
+            reliable and pleasant to use.
+          </p>
+        </div>
+      </section>
+
+      <section id="selected-work" aria-labelledby="selected-work-heading">
+        <h2 id="selected-work-heading">Selected work</h2>
+        <div class="body">
+          <article class="entry">
+            <div class="entry-head">
+              <h3>Pathling</h3>
+              <p class="dates"><time datetime="2018">2018</time> – present</p>
+            </div>
+            <p class="role">
+              Creator and technical lead, <abbr>CSIRO</abbr> ·
+              <a href="https://pathling.csiro.au/">pathling.csiro.au</a>
+            </p>
+            <p>
+              An open-source toolkit for analysing <abbr>FHIR</abbr> data with
+              clinical terminology, built on Apache Spark: libraries for Python,
+              R, Java and Scala, a <abbr>FHIR</abbr> server and a command line
+              tool. Queries can apply subsumption and concept map translation
+              across whole datasets.
+            </p>
+            <ul>
+              <li>
+                Principal author, with more than 5,000 commits since the first
+                in December 2018.
+              </li>
+              <li>
+                Python package downloads grew from about 3,000 to about 20,000 a
+                month between mid 2025 and mid 2026.
+              </li>
+              <li>
+                Used by research and health organisations including the
+                University of Queensland, SickKids in Toronto, the Murdoch
+                Children’s Research Institute and the Bavarian Cancer Research
+                Centre.
+              </li>
+              <li>
+                The query engine behind <abbr>CSIRO</abbr> work on
+                <abbr>FHIR</abbr>-to-<abbr>OMOP</abbr> transformation, data
+                quality assessment and agent-based analytics.
+              </li>
+            </ul>
+            <p class="tech">
+              Java · Scala · Apache Spark · Delta Lake · Python · FHIRPath ·
+              Kubernetes
+            </p>
+          </article>
+
+          <article class="entry">
+            <div class="entry-head">
+              <h3><abbr>SQL</abbr> on <abbr>FHIR</abbr></h3>
+              <p class="dates"><time datetime="2023">2023</time> – present</p>
+            </div>
+            <p class="role">
+              Project co-lead, HL7 International ·
+              <a href="https://sql-on-fhir.org/">sql-on-fhir.org</a>
+            </p>
+            <p>
+              An HL7 specification for defining portable, tabular views of
+              <abbr>FHIR</abbr> data using FHIRPath. A view written once runs
+              unchanged on any conforming engine, from DuckDB on a laptop to a
+              Spark cluster.
+            </p>
+            <ul>
+              <li>
+                Took the specification to its September 2026 HL7 ballot,
+                including new operations for running and exporting views and
+                <abbr>SQL</abbr> queries.
+              </li>
+              <li>
+                Thirteen independent implementations, including those from
+                Google, Health Samurai, Medplum, <abbr>NCQA</abbr> and
+                <abbr>SAS</abbr>, are tested against a shared conformance suite.
+              </li>
+              <li>
+                Most active contributor to the specification, and first author
+                of the paper that describes it.
+              </li>
+              <li>
+                Wrote an implementation that compiles views to T-<abbr
+                  >SQL</abbr
+                >
+                for Microsoft <abbr>SQL</abbr> Server.
+              </li>
+            </ul>
+            <p class="tech">
+              FHIRPath · <abbr>SQL</abbr> · TypeScript · DuckDB · FHIR IG
+              Publisher
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section id="experience" aria-labelledby="experience-heading">
+        <h2 id="experience-heading">Experience</h2>
+        <div class="body">
+          <article class="entry">
+            <div class="entry-head">
+              <h3><abbr>CSIRO</abbr> Australian e-Health Research Centre</h3>
+              <p class="dates">
+                <time datetime="2018-07">Jul 2018</time> – present
+              </p>
+            </div>
+            <p class="role">
+              Principal Research Consultant, Health Data Semantics and
+              Interoperability
+            </p>
+            <ul>
+              <li>
+                Building Signet, an open-source <abbr>SMART</abbr> on
+                <abbr>FHIR</abbr> authorisation server with passkey
+                authentication.
+              </li>
+              <li>
+                Led Aus <abbr>CVD</abbr> Risk-i, which brought the Heart
+                Foundation cardiovascular risk calculator into general practice
+                systems using <abbr>SMART</abbr> App Launch and Smart Forms.
+              </li>
+              <li>
+                Contributed to Aged Care Data Compare, Smart Health Checks, the
+                National Approach to Genomic Information Management, Enabling
+                <abbr>FHIR</abbr> in Queensland Health and sBeacon, a scalable
+                genomic data exchange.
+              </li>
+              <li>
+                Collaborated with Google, Microsoft, Queensland Health, the
+                University of Queensland, the Murdoch Children’s Research
+                Institute and the University of Toronto.
+              </li>
+            </ul>
+          </article>
+
+          <article class="entry">
+            <div class="entry-head">
+              <h3>Australian Digital Health Agency</h3>
+              <p class="dates">
+                <time datetime="2015-05">May 2015</time> –
+                <time datetime="2018-07">Jul 2018</time>
+              </p>
+            </div>
+            <p class="role">
+              Lead Architect, Clinical Terminology (<abbr>NEHTA</abbr> until
+              2016)
+            </p>
+            <ul>
+              <li>
+                Lead architect of the National Clinical Terminology Service: the
+                national portal, <abbr>FHIR</abbr> terminology server and
+                syndication service for <abbr>SNOMED CT</abbr>-AU, the
+                Australian Medicines Terminology and other content.
+              </li>
+              <li>
+                Built Medserve, a <abbr>FHIR</abbr> server for Australian
+                medicines terminology, and the open-source Polecat and Hotspot
+                terminology browsers.
+              </li>
+              <li>
+                Built Serge, which imported and reconciled <abbr>TGA</abbr> and
+                <abbr>PBS</abbr> data feeds to help terminology analysts keep
+                the medicines terminology current.
+              </li>
+              <li>
+                Made the case for the Agency’s open source program and set it
+                up, releasing its first six code bases under Apache 2.0.
+              </li>
+            </ul>
+          </article>
+
+          <article class="entry">
+            <div class="entry-head">
+              <h3>Mojo Soup</h3>
+              <p class="dates">
+                <time datetime="2012-03">Mar 2012</time> –
+                <time datetime="2016-11">Nov 2016</time>
+              </p>
+            </div>
+            <p class="role">Consultant</p>
+            <p>
+              Built the back end of Soup Mail, a hosted service for sharing
+              email within teams, and ran it in production. Ruby on Rails, Solr,
+              <abbr>AWS</abbr> and Puppet.
+            </p>
+          </article>
+
+          <article class="entry">
+            <div class="entry-head">
+              <h3>Central Petroleum and Santos</h3>
+              <p class="dates">
+                <time datetime="2014-09">Sep 2014</time> –
+                <time datetime="2016-01">Jan 2016</time>
+              </p>
+            </div>
+            <p class="role">Lead Consultant and Business Analyst</p>
+            <p>
+              Led the information systems side of the Mereenie oil and gas field
+              handover to Central Petroleum. Requirements and integration
+              testing for field management and gas pipeline systems at Santos.
+            </p>
+          </article>
+
+          <article class="entry">
+            <div class="entry-head">
+              <h3>National E-Health Transition Authority</h3>
+              <p class="dates">
+                <time datetime="2010-12">Dec 2010</time> –
+                <time datetime="2011-12">Dec 2011</time>
+              </p>
+            </div>
+            <p class="role">Business Analyst, national e-health record</p>
+            <p>
+              Requirements and stakeholder engagement for the personally
+              controlled electronic health record, now My Health Record.
+              Facilitated agreement with the pathology sector on how result
+              reports would be sent to the record, and helped design the
+              national service for clinical document templates.
+            </p>
+          </article>
+
+          <div class="minor">
+            <h3>Earlier</h3>
+            <ul id="earlier" class="ledger">
+              <li>
+                <span>Web developer, thrudigital, London</span>
+                <span class="dates"><time datetime="2009">2009</time></span>
+              </li>
+              <li>
+                <span>Business analyst, data warehousing, Suncorp</span>
+                <span class="dates"
+                  ><time datetime="2007">2007</time>–<time datetime="2008"
+                    >2008</time
+                  ></span
+                >
+              </li>
+              <li>
+                <span
+                  >Business analyst, business intelligence, Queensland
+                  Government</span
+                >
+                <span class="dates"
+                  ><time datetime="2007">2007</time>–<time datetime="2008"
+                    >2008</time
+                  ></span
+                >
+              </li>
+              <li>
+                <span
+                  >Information officer and business analyst, Department of
+                  Natural Resources and Water</span
+                >
+                <span class="dates"
+                  ><time datetime="2005">2005</time>–<time datetime="2007"
+                    >2007</time
+                  ></span
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div class="minor">
+            <h3>Independent work</h3>
+            <ul id="independent-work" class="ledger">
+              <li>
+                <span
+                  >Small Spark, my own company, building Ruby on Rails
+                  e-commerce sites for clients</span
+                >
+                <span class="dates"
+                  ><time datetime="2009">2009</time>–<time datetime="2010"
+                    >2010</time
+                  ></span
+                >
+              </li>
+              <li>
+                <span
+                  ><a
+                    href="https://web.archive.org/web/20151106082900/http://typefront.com/"
+                    >TypeFront</a
+                  >, font hosting for the web with licensing controls for type
+                  foundries</span
+                >
+                <span class="dates"
+                  ><time datetime="2009">2009</time>–<time datetime="2015"
+                    >2015</time
+                  ></span
+                >
+              </li>
+              <li>
+                <span
+                  ><a href="https://github.com/johngrimes/blavel">Blavel</a>,
+                  travel blogging with geocoded posts and maps</span
+                >
+                <span class="dates"
+                  ><time datetime="2008">2008</time>–<time datetime="2017"
+                    >2017</time
+                  ></span
+                >
+              </li>
+              <li>
+                <span
+                  ><a href="https://github.com/johngrimes/rosettasaurus"
+                    >Rosettasaurus</a
+                  >, a community-edited dictionary of translated sentences</span
+                >
+                <span class="dates"><time datetime="2009">2009</time></span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="standards" aria-labelledby="standards-heading">
+        <h2 id="standards-heading">Standards and speaking</h2>
+        <div class="body">
+          <p>
+            I co-lead the <abbr>SQL</abbr> on <abbr>FHIR</abbr> project within
+            HL7 International and represent <abbr>CSIRO</abbr> at HL7 Working
+            Group Meetings, contributing to the <abbr>FHIR</abbr> specification
+            and its tooling, including the <abbr>FHIR</abbr> IG Publisher. I ran
+            the <abbr>SQL</abbr> on <abbr>FHIR</abbr> track at the HL7
+            International connectathon in Rotterdam and have led tracks at HL7
+            Australia connectathons.
+          </p>
+          <p class="venues">
+            Speaker at <abbr>MEDINFO</abbr>, HL7 <abbr>FHIR</abbr> DevDays,
+            <abbr>SNOMED CT</abbr> Expo and HL7 International connectathons.
+          </p>
+        </div>
+      </section>
+
+      <section id="publications" aria-labelledby="publications-heading">
+        <h2 id="publications-heading">Publications</h2>
+        <div class="body">
+          <h3>Papers</h3>
+          <ol class="citations">
+            <li>
+              Grimes J, Brush R, Rhyzhikov N, Szul P, Mandel J, Gottlieb D, et
+              al.
+              <cite
+                ><abbr>SQL</abbr> on <abbr>FHIR</abbr> - Tabular views of
+                <abbr>FHIR</abbr> data using FHIRPath.</cite
+              >
+              npj Digital Medicine. 2025;8:342.
+              <a href="https://doi.org/10.1038/s41746-025-01708-w"
+                >doi:10.1038/s41746-025-01708-w</a
+              >
+            </li>
+            <li>
+              Grimes J, Szul P, Metke-Jimenez A, Lawley M, Loi K.
+              <cite>Pathling: analytics on <abbr>FHIR</abbr>.</cite> Journal of
+              Biomedical Semantics. 2022;13:23.
+              <a href="https://doi.org/10.1186/s13326-022-00277-1"
+                >doi:10.1186/s13326-022-00277-1</a
+              >
+            </li>
+          </ol>
+          <h3>Software</h3>
+          <ul class="citations">
+            <li>
+              <cite
+                ><abbr>SQL</abbr> on <abbr>FHIR</abbr> views for Microsoft
+                <abbr>SQL</abbr> Server</cite
+              >
+              (2025). Compiles views to T-<abbr>SQL</abbr>.
+              <a href="https://doi.org/10.25919/vnzg-tn91"
+                >doi:10.25919/vnzg-tn91</a
+              >
+            </li>
+            <li>
+              <cite><abbr>MCP</abbr> <abbr>FHIR</abbr> Tools</cite> (2025).
+              <abbr>FHIR</abbr> tools for language models, via the Model Context
+              Protocol.
+              <a href="https://doi.org/10.25919/n7r2-rw40"
+                >doi:10.25919/n7r2-rw40</a
+              >
+            </li>
+            <li>
+              <cite><abbr>ECL</abbr> Builder</cite> (2024). Components for
+              building <abbr>SNOMED CT</abbr> queries.
+              <a href="https://doi.org/10.25919/03y2-d383"
+                >doi:10.25919/03y2-d383</a
+              >
+            </li>
+            <li>
+              <cite><abbr>FHIR</abbr> Terminology Encoder</cite> (2023).
+              Terminology encoding for machine learning.
+              <a href="https://doi.org/10.25919/tpa2-p969"
+                >doi:10.25919/tpa2-p969</a
+              >
+            </li>
+            <li>
+              <cite>Pathling</cite> (2021). Analytics on <abbr>FHIR</abbr> data
+              with clinical terminology.
+              <a href="https://doi.org/10.25919/ezpq-qv35"
+                >doi:10.25919/ezpq-qv35</a
+              >
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="skills" aria-labelledby="skills-heading">
+        <h2 id="skills-heading">Skills</h2>
+        <div class="body">
+          <dl class="skills">
+            <div>
+              <dt>Standards</dt>
+              <dd>
+                <abbr>FHIR</abbr>, <abbr>SQL</abbr> on <abbr>FHIR</abbr>,
+                FHIRPath, <abbr>SMART</abbr> App Launch, Bulk Data Access,
+                Structured Data Capture, <abbr>CDS</abbr> Hooks,
+                <abbr>OMOP</abbr> <abbr>CDM</abbr>
+              </dd>
+            </div>
+            <div>
+              <dt>Terminology</dt>
+              <dd>
+                <abbr>SNOMED CT</abbr>, <abbr>ECL</abbr>, Australian Medicines
+                Terminology, <abbr>FHIR</abbr> terminology services
+              </dd>
+            </div>
+            <div>
+              <dt>Languages</dt>
+              <dd>Java, Scala, Python, TypeScript, <abbr>SQL</abbr>, Ruby</dd>
+            </div>
+            <div>
+              <dt>Data</dt>
+              <dd>Apache Spark, Delta Lake, Parquet, DuckDB, PostgreSQL</dd>
+            </div>
+            <div>
+              <dt>AI</dt>
+              <dd>
+                Language model agents and tools, Model Context Protocol, agent
+                evaluation
+              </dd>
+            </div>
+            <div>
+              <dt>Delivery</dt>
+              <dd>
+                Kubernetes, Helm, Docker, <abbr>AWS</abbr>, GitHub Actions,
+                React
+              </dd>
+            </div>
+          </dl>
+        </div>
+      </section>
+
+      <section id="education" aria-labelledby="education-heading">
+        <h2 id="education-heading">Education</h2>
+        <div class="body">
+          <ul class="ledger">
+            <li>
+              <span
+                >Bachelor of Information Technology, Griffith University</span
+              >
+              <span class="dates"
+                ><time datetime="2000">2000</time>–<time datetime="2004"
+                  >2004</time
+                ></span
+              >
+            </li>
+          </ul>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>
+        Set in Source Serif 4 and Source Sans 3. Hand-written
+        <abbr>HTML</abbr> and <abbr>CSS</abbr> (<a
+          href="https://github.com/johngrimes/johngrimes.github.com"
+          >source</a
+        >). Updated November 2026.
+        <a href="https://john.grimes.id.au/">john.grimes.id.au</a>
+      </p>
+    </footer>
+  </body>
+</html>
