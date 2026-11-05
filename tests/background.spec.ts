@@ -39,18 +39,23 @@ const AA = 4.5;
 
 /**
  * Opens the page with an optional variant and waits until the background has
- * drawn its first frame or settled on its still fallback. CI runners render
- * WebGL in software, so the first frame of a live scene can take a while.
+ * drawn its first frame or settled on its still fallback, and has finished
+ * fading in. CI runners render WebGL in software, so the first frame of a
+ * live scene can take a while.
  *
  * @param page - The Playwright page.
  * @param variant - Value for the `bg` query parameter, if any.
  */
 async function open(page: Page, variant?: string): Promise<void> {
   await page.goto(variant === undefined ? "/" : `/?bg=${variant}`);
-  await expect(page.locator(".backdrop")).toHaveAttribute(
-    "data-state",
-    /^(ready|fallback)$/,
-    { timeout: 15_000 },
+  const backdrop = page.locator(".backdrop");
+  await expect(backdrop).toHaveAttribute("data-state", /^(ready|fallback)$/, {
+    timeout: 15_000,
+  });
+  // On a loaded machine two screenshots can match mid-fade, so wait for the
+  // fade itself rather than for the screenshots to stop changing.
+  await backdrop.evaluate((element) =>
+    Promise.all(element.getAnimations().map((a) => a.finished)),
   );
 }
 
