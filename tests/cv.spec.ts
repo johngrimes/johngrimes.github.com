@@ -95,13 +95,17 @@ test.describe("content", () => {
     await expect(titles).toHaveText(["Pathling", "SQL on FHIR"]);
   });
 
-  test("describes the SQL on FHIR role as project co-lead", async ({
-    page,
-  }) => {
+  test("describes the SQL on FHIR role as project lead", async ({ page }) => {
     const entry = page.locator("#selected-work article", {
       has: page.locator("h3", { hasText: "SQL on FHIR" }),
     });
-    await expect(entry).toContainText(/co-lead/i);
+    await expect(entry.locator(".role")).toContainText(/Project lead, HL7/);
+    // The page as a whole no longer describes the role as shared.
+    await expect(page.locator("body")).not.toContainText(/co-lead/i);
+    const description = await page
+      .locator("meta[name='description'], meta[property='og:description']")
+      .evaluateAll((metas) => metas.map((m) => m.getAttribute("content")));
+    for (const content of description) expect(content).not.toMatch(/co-lead/i);
   });
 
   test("links to email, GitHub, LinkedIn and ORCID and nothing else", async ({
