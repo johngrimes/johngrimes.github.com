@@ -147,6 +147,54 @@ async function minContrast(
   );
 }
 
+/**
+ * Measures how far two screenshots of the same size differ, as the largest
+ * difference in any colour channel at each pixel.
+ *
+ * @param page - Any page, used to decode the PNGs in the browser.
+ * @param a - The first screenshot.
+ * @param b - The second screenshot.
+ * @returns The 99.9th percentile and the maximum of the per-pixel
+ *   differences, in 0-255 levels.
+ */
+async function pixelDifference(
+  page: Page,
+  a: Buffer,
+  b: Buffer,
+): Promise<{ p999: number; max: number }> {
+  return page.evaluate(
+    async (sources) => {
+      const [first, second] = await Promise.all(
+        sources.map(async (data) => {
+          const image = new Image();
+          image.src = `data:image/png;base64,${data}`;
+          await image.decode();
+          const canvas = document.createElement("canvas");
+          canvas.width = image.naturalWidth;
+          canvas.height = image.naturalHeight;
+          const context = canvas.getContext("2d")!;
+          context.drawImage(image, 0, 0);
+          return context.getImageData(0, 0, canvas.width, canvas.height).data;
+        }),
+      );
+      const differences = new Uint8Array(first.length / 4);
+      for (let i = 0; i < first.length; i += 4) {
+        differences[i / 4] = Math.max(
+          Math.abs(first[i] - second[i]),
+          Math.abs(first[i + 1] - second[i + 1]),
+          Math.abs(first[i + 2] - second[i + 2]),
+        );
+      }
+      differences.sort();
+      return {
+        p999: differences[Math.floor(differences.length * 0.999)],
+        max: differences[differences.length - 1],
+      };
+    },
+    [a.toString("base64"), b.toString("base64")],
+  );
+}
+
 // ---------------------------------------------------------------------------
 // Variant selection
 // ---------------------------------------------------------------------------
@@ -240,6 +288,34 @@ test.describe("variant selection", () => {
     });
   }
 });
+
+// ---------------------------------------------------------------------------
+// Agreement between variants
+// ---------------------------------------------------------------------------
+
+for (const colorScheme of ["light", "dark"] as const) {
+  test(`draws the same scene at rest with ?bg=layers and ?bg=depth in ${colorScheme} mode`, async ({
+    page,
+  }) => {
+    // Both variants come from the same render: the stacked depth slices
+    // must recompose the whole image, including the soft edges of blurred
+    // foreground objects.
+    await page.emulateMedia({ colorScheme });
+    const shots: Buffer[] = [];
+    for (const variant of ["layers", "depth"]) {
+      await open(page, variant);
+      await hideContent(page);
+      shots.push(await settledShot(page));
+    }
+    // The two differ slightly where the browser and WebGL resample the
+    // images differently and where each slice was compressed separately (up
+    // to about 7 levels at the 99.9th percentile). Slices that cut away the
+    // blurred edge of a foreground object differ by 12 or more.
+    const difference = await pixelDifference(page, shots[0], shots[1]);
+    expect(difference.p999).toBeLessThanOrEqual(9);
+    expect(difference.max).toBeLessThanOrEqual(15);
+  });
+}
 
 // ---------------------------------------------------------------------------
 // Colour schemes

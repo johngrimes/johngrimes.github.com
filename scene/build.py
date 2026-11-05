@@ -806,7 +806,13 @@ def read_exr(name):
         + 0.0722 * channels["Combined.B"]
     )
     grey = np.where(alpha > 1e-4, grey / np.maximum(alpha, 1e-4), 0)
-    distance = channels["Mist.Z"] * FAR * 2
+    # Samples that miss everything count as mist 1, so at the blurred edge of
+    # an object the pixel's mist mixes the object with the empty background.
+    # Removing the background's share leaves the object's own distance, as
+    # unpremultiplying does for its colour.
+    mist = channels["Mist.Z"]
+    mist = np.where(alpha > 1e-3, (mist - (1 - alpha)) / np.maximum(alpha, 1e-3), 1)
+    distance = np.clip(mist, 0, 1) * FAR * 2
 
     # Mist measures straight-line distance; parallax and the slices use depth
     # along the camera axis, which is shorter towards the edges of the frame.
