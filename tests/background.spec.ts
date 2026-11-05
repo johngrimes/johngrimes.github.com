@@ -39,7 +39,8 @@ const AA = 4.5;
 
 /**
  * Opens the page with an optional variant and waits until the background has
- * drawn its first frame or settled on its still fallback.
+ * drawn its first frame or settled on its still fallback. CI runners render
+ * WebGL in software, so the first frame of a live scene can take a while.
  *
  * @param page - The Playwright page.
  * @param variant - Value for the `bg` query parameter, if any.
@@ -49,6 +50,7 @@ async function open(page: Page, variant?: string): Promise<void> {
   await expect(page.locator(".backdrop")).toHaveAttribute(
     "data-state",
     /^(ready|fallback)$/,
+    { timeout: 15_000 },
   );
 }
 
