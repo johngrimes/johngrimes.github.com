@@ -1,3 +1,5 @@
 node_modules/
 test-results/
 playwright-report/
+scene/out/
+.ruff_cache/
