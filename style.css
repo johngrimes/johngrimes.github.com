@@ -391,6 +391,37 @@ footer p {
   border-top: 1px solid var(--rule);
 }
 
+/* Scene background (background/background.js): a decorative layer fixed
+   behind the page that fades in once its first frame is drawn. Each variant
+   sizes and moves its own images or canvas inside it. */
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.8s;
+}
+
+.backdrop:is([data-state="ready"], [data-state="fallback"]) {
+  opacity: 1;
+}
+
+.backdrop > :is(img, canvas) {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .backdrop {
+    transition: none;
+  }
+}
+
 @media (width <= 44rem) {
   main > section {
     flex-direction: column;
@@ -525,5 +556,9 @@ footer p {
 
   footer p {
     padding-top: 0.8rem;
+  }
+
+  .backdrop {
+    display: none;
   }
 }

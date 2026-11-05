@@ -1,0 +1,49 @@
+{
+  "aspect": 1.7777777777777777,
+  "overscan": 0.03,
+  "focal": 0.4444444444444444,
+  "focus": 7.528,
+  "baseline": 0.1532,
+  "near": 2.0,
+  "far": 100.0,
+  "layers": [
+    {
+      "depth": 100.0
+    },
+    {
+      "depth": 13.0
+    },
+    {
+      "depth": 7.5
+    },
+    {
+      "depth": 4.6
+    },
+    {
+      "depth": 3.2
+    }
+  ],
+  "fog": {
+    "start": 7.0,
+    "end": 55.0
+  },
+  "exposure": 1.6,
+  "lighting": {
+    "sky": 1.1,
+    "sun": 3.0
+  },
+  "palette": {
+    "light": {
+      "paper": "#fbf8f3",
+      "extreme": "#ded9d4",
+      "shadow": 1.0,
+      "lit": 0.12
+    },
+    "dark": {
+      "paper": "#171513",
+      "extreme": "#33302d",
+      "shadow": 0.1,
+      "lit": 0.6
+    }
+  }
+}

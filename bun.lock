@@ -12,6 +12,7 @@
         "prettier": "3.9.10",
         "stylelint": "18.0.0",
         "stylelint-config-standard": "41.0.0",
+        "three": "0.187.0",
       },
     },
   },
@@ -119,6 +120,8 @@
     "stylelint-config-recommended": ["stylelint-config-recommended@19.0.0", "", { "peerDependencies": { "stylelint": "^18.0.0" } }, "sha512-Y15XB19RManqBOpbRC42tF8R/Hfe314xYLzedRlnnYxYzZ0777RakDQIGcqYfrz9jWGoVyjaGTdpSl9F+roOOw=="],
 
     "stylelint-config-standard": ["stylelint-config-standard@41.0.0", "", { "dependencies": { "stylelint-config-recommended": "^19.0.0" }, "peerDependencies": { "stylelint": "^18.0.0" } }, "sha512-EJIvMOMARieBOLhw2yzN7BaVFiIY2Ex8CkbXahxP6tQZK41+N8OVUo57Uvx9iTr862h+thqDoDH7vQbeth1ryg=="],
+
+    "three": ["three@0.187.0", "", {}, "sha512-Qiu7R+Cmh8CstZsY1uJOSWnVlfo7ZtNLV7mF8Jltk3LB3AtDu9cRZlcnRKkAk8Y4z6KKw35z7Y7Urd7jWY8etA=="],
 
     "tinyglobby": ["tinyglobby@0.2.17", "", { "dependencies": { "fdir": "^6.5.0", "picomatch": "^4.0.4" } }, "sha512-wXR/dYpcqKmfWpEdZjiKJOwCNFndD0DMnrW/cYjVGttEkBfVgcLFHoNrlj47mjOVic9yyNu65alsgF4NQyTa2g=="],
 

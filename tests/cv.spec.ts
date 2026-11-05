@@ -186,14 +186,15 @@ test.describe("typography", () => {
     expect(date.numeric).toContain("tabular-nums");
   });
 
-  test("makes no requests outside the site's own origin", async ({ page }) => {
+  test("makes no requests outside the site's own origin", async ({
+    page,
+    baseURL,
+  }) => {
     const requests: string[] = [];
     page.on("request", (r) => requests.push(r.url()));
     await page.goto("/");
     await page.evaluate(() => document.fonts.ready);
-    const foreign = requests.filter(
-      (url) => !url.startsWith("http://localhost:4173/"),
-    );
+    const foreign = requests.filter((url) => !url.startsWith(`${baseURL}/`));
     expect(foreign).toEqual([]);
   });
 
@@ -278,8 +279,11 @@ test.describe("print", () => {
 // Legacy URL
 // ---------------------------------------------------------------------------
 
-test("redirects the old /cv address to the home page", async ({ page }) => {
+test("redirects the old /cv address to the home page", async ({
+  page,
+  baseURL,
+}) => {
   await page.goto("/cv");
-  await page.waitForURL("http://localhost:4173/");
+  await page.waitForURL(`${baseURL}/`);
   await expect(page.locator("header h1")).toHaveText("John Grimes");
 });
