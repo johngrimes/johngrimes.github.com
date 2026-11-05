@@ -2,34 +2,96 @@
 
 Source for [john.grimes.id.au](https://john.grimes.id.au/), a single-page CV.
 
-The page is hand-written HTML and CSS with no build step. GitHub Pages serves
-the repository root from `master`; `.nojekyll` stops Pages from running Jekyll
-over it. The old `/cv` address redirects to `/`.
+The page is hand-written HTML and CSS, plus a small set of browser modules for
+the scene background, with no build step. GitHub Pages serves the repository
+root from `master`; `.nojekyll` stops Pages from running Jekyll over it. The
+old `/cv` address redirects to `/`.
 
-| File            | Purpose                                    |
-| --------------- | ------------------------------------------ |
-| `index.html`    | The CV                                     |
-| `style.css`     | Screen, dark mode and A4 print styles      |
-| `fonts/`        | Subset WOFF2 fonts and their licences      |
-| `cv/index.html` | Redirect from the old CV address           |
-| `tests/`        | Browser tests and the local preview server |
+| File            | Purpose                                                   |
+| --------------- | --------------------------------------------------------- |
+| `index.html`    | The CV                                                    |
+| `style.css`     | Screen, dark mode and A4 print styles                     |
+| `fonts/`        | Subset WOFF2 fonts and their licences                     |
+| `background/`   | The 3D scene behind the page: loader, variants and assets |
+| `scene/`        | Sources for the generated background assets               |
+| `cv/index.html` | Redirect from the old CV address                          |
+| `tests/`        | Browser tests and the local preview server                |
 
 ## Working on it
 
-Requires [Bun](https://bun.sh/).
+Requires [Bun](https://bun.sh/), and [uv](https://docs.astral.sh/uv/) for
+linting the Python scene script with ruff.
 
 ```sh
 bun install
 bun run serve        # preview at http://localhost:4173/
-bun run lint         # Prettier, html-validate and stylelint
+bun run lint         # Prettier, html-validate, stylelint and ruff
 bunx playwright install chromium
 bun run test         # browser tests
 ```
 
+Both the preview server and the tests use the port in `PORT` (default 4173).
+
 The tests check the agreed content decisions, accessibility (axe) in light and
 dark modes, layout at 320px, and that printing produces at most two A4 pages.
 Content that pushes the print layout onto a third page fails the build, so
-trim before adding.
+trim before adding. The background tests are described below.
+
+## Scene background
+
+Behind the page is a faint 3D scene of an overgrown laboratory under a ribbed
+glass dome. When the pointer moves, near and far parts of the scene shift
+against each other around a focal plane on the benches. On touch screens,
+scrolling moves the viewpoint instead. With reduced motion requested, the
+scene stays still, and it is left out of print.
+
+There are three implementations of the same scene, chosen with the `bg` query
+parameter:
+
+| Value              | How it works                                                                      |
+| ------------------ | --------------------------------------------------------------------------------- |
+| `layers` (default) | Five pre-rendered depth slices as transparent images, moved with CSS transforms   |
+| `depth`            | One pre-rendered image and a disparity map, displaced per pixel by a WebGL shader |
+| `gltf`             | The model rendered live with three.js, with a fixed-focus depth of field pass     |
+
+`background/background.js` waits for the page to finish loading, then loads
+only the chosen variant and the assets for the current colour scheme. The
+`depth` and `gltf` variants show a still image if WebGL is unavailable, and
+`background/noscript.css` shows the same still image when JavaScript is off.
+
+The scene is grey. Each pixel's shade and distance are mapped onto a line from
+the paper colour towards a darker (light mode) or lighter (dark mode) tint,
+and the line stops where muted text would fall below a contrast of 4.75:1.
+Fog fades distant parts of the scene into the paper. The tests check that
+muted text keeps WCAG AA contrast (4.5:1) against every pixel of each variant
+in both schemes. They also cover variant selection, which assets load and
+when, motion and its suppression, the WebGL and no-JavaScript fallbacks, and
+print.
+
+### Regenerating the assets
+
+`scene/build.py` builds the scene procedurally in Blender. It renders the full
+frame and the depth slices with Cycles, maps them onto both palettes, and
+writes everything in `background/assets/`, including the manifest
+`scene.json` that the variants read. It needs Blender 5.2 and `cwebp` from
+[libwebp](https://developers.google.com/speed/webp):
+
+```sh
+/Applications/Blender.app/Contents/MacOS/Blender -b --factory-startup -P scene/build.py
+```
+
+A full build takes about two minutes on an Apple M4 Max. Intermediate renders
+go to `scene/out/`, and `-- --post-only` reuses them when only the palette has
+changed.
+
+`background/three.js` is a single-file build of the parts of
+[three.js](https://threejs.org/) that the `gltf` variant uses, under the MIT
+licence (see `background/three.LICENSE.txt`). To rebuild it after changing
+`scene/three.js` or the `three` version:
+
+```sh
+bun run vendor:three
+```
 
 ## Fonts
 

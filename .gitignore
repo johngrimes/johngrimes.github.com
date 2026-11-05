@@ -3,3 +3,4 @@ test-results/
 playwright-report/
 scene/out/
 .ruff_cache/
+__pycache__/

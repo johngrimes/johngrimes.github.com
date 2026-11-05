@@ -1,0 +1,26 @@
+/*
+ * Loaded only when JavaScript is off: the scene as a still image behind the
+ * page, in place of the moving background.
+ *
+ * Author: John Grimes
+ */
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: url("assets/light/colour.webp") center / cover;
+}
+
+@media (prefers-color-scheme: dark) {
+  body::before {
+    background-image: url("assets/dark/colour.webp");
+  }
+}
+
+@media print {
+  body::before {
+    display: none;
+  }
+}
