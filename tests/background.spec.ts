@@ -301,7 +301,10 @@ for (const colorScheme of ["light", "dark"] as const) {
   }) => {
     // Both variants come from the same render: the stacked depth slices
     // must recompose the whole image, including the soft edges of blurred
-    // foreground objects.
+    // foreground objects. At this viewport one image pixel covers one screen
+    // pixel, so neither variant resamples and the comparison does not depend
+    // on how a browser or GPU filters images.
+    await page.setViewportSize({ width: 2400, height: 1350 });
     await page.emulateMedia({ colorScheme });
     const shots: Buffer[] = [];
     for (const variant of ["layers", "depth"]) {
@@ -309,12 +312,11 @@ for (const colorScheme of ["light", "dark"] as const) {
       await hideContent(page);
       shots.push(await settledShot(page));
     }
-    // The two differ slightly where the browser and WebGL resample the
-    // images differently and where each slice was compressed separately (up
-    // to about 7 levels at the 99.9th percentile). Slices that cut away the
-    // blurred edge of a foreground object differ by 12 or more.
+    // Slices compressed separately leave up to about 6 levels of difference
+    // at the 99.9th percentile. Slices that cut away the blurred edge of a
+    // foreground object differ by 12 or more.
     const difference = await pixelDifference(page, shots[0], shots[1]);
-    expect(difference.p999).toBeLessThanOrEqual(9);
+    expect(difference.p999).toBeLessThanOrEqual(8);
     expect(difference.max).toBeLessThanOrEqual(15);
   });
 }
