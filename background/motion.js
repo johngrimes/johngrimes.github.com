@@ -34,6 +34,13 @@ export function createMotion(onChange) {
   let frame = 0;
   let last = 0;
 
+  /**
+   * Eases the offset one frame towards its goal and reports it, scheduling
+   * another frame until the offset settles.
+   *
+   * @param {DOMHighResTimeStamp} time - Time of this animation frame.
+   * @returns {void}
+   */
   const step = (time) => {
     const dt = last ? Math.min((time - last) / 1000, 0.1) : 1 / 60;
     last = time;
@@ -55,11 +62,30 @@ export function createMotion(onChange) {
     }
   };
 
+  /**
+   * Starts easing on the next animation frame, unless already easing.
+   *
+   * @returns {void}
+   */
+  const wake = () => {
+    if (!frame) {
+      frame = requestAnimationFrame(step);
+    }
+  };
+
+  /**
+   * Sets the offset to ease towards, clamped to [-1, 1]. With reduced motion
+   * the target is kept for later, but nothing moves or redraws.
+   *
+   * @param {number} x - Horizontal target offset.
+   * @param {number} y - Vertical target offset.
+   * @returns {void}
+   */
   const aim = (x, y) => {
     target.x = Math.max(-1, Math.min(1, x));
     target.y = Math.max(-1, Math.min(1, y));
-    if (!frame) {
-      frame = requestAnimationFrame(step);
+    if (!reduce.matches) {
+      wake();
     }
   };
 
@@ -77,7 +103,11 @@ export function createMotion(onChange) {
     }
   });
 
-  // Scroll progress down the page, 0 at the top and 1 at the bottom.
+  /**
+   * Measures scroll progress down the page.
+   *
+   * @returns {number} 0 at the top of the page and 1 at the bottom.
+   */
   const scrolled = () => {
     const range = document.documentElement.scrollHeight - innerHeight;
     return range > 0 ? scrollY / range : 0;
@@ -98,5 +128,7 @@ export function createMotion(onChange) {
     current.y = target.y = scrolled();
     onChange({ x: current.x, y: current.y });
   }
-  reduce.addEventListener("change", () => aim(target.x, target.y));
+  // Ease to rest when reduced motion is turned on, and back to the latest
+  // target when it is turned off.
+  reduce.addEventListener("change", wake);
 }

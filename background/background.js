@@ -50,6 +50,13 @@ async function start() {
   let offset = { x: 0, y: 0 };
   let generation = 0;
 
+  /**
+   * Draws the scene for the current colour scheme, then replaces the view
+   * drawn for the previous one.
+   *
+   * @returns {Promise<void>}
+   * @throws {Error} If the variant fails to draw.
+   */
   const show = async () => {
     const mine = ++generation;
     const scheme = dark.matches ? "dark" : "light";

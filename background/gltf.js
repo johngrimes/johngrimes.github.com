@@ -234,6 +234,11 @@ async function mountStill(container, { manifest, assets, scheme }) {
   image.alt = "";
   image.src = new URL(`${scheme}/colour.webp`, assets).href;
 
+  /**
+   * Sizes the still image like the full render and centres it.
+   *
+   * @returns {void}
+   */
   const place = () => {
     const { clientWidth, clientHeight } = container;
     const s = coverScale(clientWidth, clientHeight, aspect);
@@ -288,6 +293,11 @@ async function mountScene(container, { manifest, assets, scheme }) {
   let offset = { x: 0, y: 0 };
   let size = "";
 
+  /**
+   * Releases the canvas, the GL resources and the resize listener.
+   *
+   * @returns {void}
+   */
   const release = () => {
     removeEventListener("resize", draw);
     scene.traverse((object) => {
@@ -302,6 +312,12 @@ async function mountScene(container, { manifest, assets, scheme }) {
     canvas.remove();
   };
 
+  /**
+   * Renders the scene for the latest offset, resizing the render targets
+   * first if the viewport or pixel ratio has changed.
+   *
+   * @returns {void}
+   */
   const draw = () => {
     const { clientWidth: width, clientHeight: height } = container;
     const ratio = Math.min(devicePixelRatio, MAX_PIXEL_RATIO);
@@ -391,6 +407,15 @@ function createView(three, gltf, manifest) {
   camera.matrixAutoUpdate = false;
   camera.matrix.copy(rest);
 
+  /**
+   * Moves the camera for an offset and sets the off-axis projection that
+   * keeps the focal plane still, with the displayed frame cover fitted.
+   *
+   * @param {{x: number, y: number}} offset - Offset in [-1, 1] on each axis.
+   * @param {number} width - Viewport width in CSS px.
+   * @param {number} height - Viewport height in CSS px.
+   * @returns {void}
+   */
   const place = ({ x, y }, width, height) => {
     // Move the camera across its own plane.
     position
