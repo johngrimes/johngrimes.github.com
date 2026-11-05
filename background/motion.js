@@ -14,8 +14,13 @@
 // Time constant (seconds) of the easing towards the latest target.
 const EASING = 0.18;
 
-// Distance from the target below which the offset snaps to it and stops.
-const SETTLE = 1e-4;
+// Distance from the target below which the offset snaps to it and stops. At
+// the largest parallax this is well under a tenth of a pixel.
+const SETTLE = 1e-3;
+
+// Longest time (seconds) a single frame may advance the easing, so slow
+// renderers settle in few frames without jumping after the tab was hidden.
+const LONGEST_FRAME = 0.25;
 
 /**
  * Starts listening for pointer and scroll input.
@@ -42,7 +47,7 @@ export function createMotion(onChange) {
    * @returns {void}
    */
   const step = (time) => {
-    const dt = last ? Math.min((time - last) / 1000, 0.1) : 1 / 60;
+    const dt = last ? Math.min((time - last) / 1000, LONGEST_FRAME) : 1 / 60;
     last = time;
     const goal = reduce.matches ? { x: 0, y: 0 } : target;
     const k = 1 - Math.exp(-dt / EASING);
