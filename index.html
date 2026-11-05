@@ -45,12 +45,17 @@
       <p class="contact">
         <span>Brisbane, Australia</span>
         <a href="mailto:john@grimes.id.au">john@grimes.id.au</a>
-        <a href="https://github.com/johngrimes">github.com/johngrimes</a>
+        <a href="https://github.com/johngrimes"
+          ><span class="screen">GitHub</span
+          ><span class="print">github.com/johngrimes</span></a
+        >
         <a href="https://www.linkedin.com/in/johngrimes"
-          >linkedin.com/in/johngrimes</a
+          ><span class="screen">LinkedIn</span
+          ><span class="print">linkedin.com/in/johngrimes</span></a
         >
         <a href="https://orcid.org/0000-0002-9575-7641"
-          >orcid.org/0000-0002-9575-7641</a
+          ><span class="screen">ORCID</span
+          ><span class="print">orcid.org/0000-0002-9575-7641</span></a
         >
       </p>
     </header>
@@ -61,18 +66,11 @@
         <div class="body">
           <p class="lede">
             I design and build software and standards that make health data
-            usable for analysis. My work combines <abbr>FHIR</abbr>, clinical
-            terminology and large-scale data processing. I created Pathling, an
-            open-source toolkit for <abbr>FHIR</abbr> analytics, and I co-lead
-            the HL7 <abbr>SQL</abbr> on <abbr>FHIR</abbr> specification.
-          </p>
-          <p>
+            usable for analysis, combining <abbr>FHIR</abbr>, clinical
+            terminology and large-scale data processing. I created Pathling and
+            co-lead the HL7 <abbr>SQL</abbr> on <abbr>FHIR</abbr> specification.
             I have worked in Australian digital health since 2010, including as
-            lead architect of the National Clinical Terminology Service and on
-            the requirements for My Health Record. Before that I built and ran
-            web products. I write the specification, the code and the tests, and
-            I pay close attention to the details that make a tool reliable and
-            pleasant to use.
+            lead architect of the National Clinical Terminology Service.
           </p>
         </div>
       </section>
@@ -91,16 +89,10 @@
             </p>
             <p>
               An open-source toolkit for analysing <abbr>FHIR</abbr> data with
-              clinical terminology, built on Apache Spark: libraries for Python,
-              R, Java and Scala, a <abbr>FHIR</abbr> server and a command line
-              tool. Queries can apply subsumption and concept map translation
-              across whole datasets.
+              clinical terminology, built on Apache Spark, with libraries for
+              Python, R, Java and Scala.
             </p>
             <ul>
-              <li>
-                Principal author, with more than 5,000 commits since the first
-                in December 2018.
-              </li>
               <li>
                 Python package downloads grew from about 3,000 to about 20,000 a
                 month between mid 2025 and mid 2026.
@@ -117,10 +109,6 @@
                 quality assessment and agent-based analytics.
               </li>
             </ul>
-            <p class="tech">
-              Java · Scala · Apache Spark · Delta Lake · Python · FHIRPath ·
-              Kubernetes
-            </p>
           </article>
 
           <article class="entry">
@@ -133,21 +121,21 @@
               <a href="https://sql-on-fhir.org/">sql-on-fhir.org</a>
             </p>
             <p>
-              An HL7 specification for defining portable, tabular views of
-              <abbr>FHIR</abbr> data using FHIRPath. A view written once runs
+              An HL7 specification for portable, tabular views of
+              <abbr>FHIR</abbr> data, defined using FHIRPath. A view runs
               unchanged on any conforming engine, from DuckDB on a laptop to a
               Spark cluster.
             </p>
             <ul>
               <li>
-                Took the specification to its September 2026 HL7 ballot,
-                including new operations for running and exporting views and
-                <abbr>SQL</abbr> queries.
-              </li>
-              <li>
                 Thirteen independent implementations, including those from
                 Google, Health Samurai, Medplum, <abbr>NCQA</abbr> and
                 <abbr>SAS</abbr>, are tested against a shared conformance suite.
+              </li>
+              <li>
+                Took the specification to its September 2026 HL7 ballot,
+                including new operations for running and exporting views and
+                <abbr>SQL</abbr> queries.
               </li>
               <li>
                 Most active contributor to the specification, and first author
@@ -160,10 +148,6 @@
                 for Microsoft <abbr>SQL</abbr> Server.
               </li>
             </ul>
-            <p class="tech">
-              FHIRPath · <abbr>SQL</abbr> · TypeScript · DuckDB · FHIR IG
-              Publisher
-            </p>
           </article>
         </div>
       </section>
@@ -203,13 +187,13 @@
                 <abbr>FHIR</abbr> in Queensland Health and sBeacon, a scalable
                 genomic data exchange.
               </li>
-              <li>
-                Collaborated with Google, Microsoft, Queensland Health, the
-                University of Queensland, the Murdoch Children’s Research
-                Institute and the University of Toronto.
-              </li>
             </ul>
           </article>
+
+          <p class="note">
+            The next three roles ran concurrently, contracted through my
+            company, Small Spark.
+          </p>
 
           <article class="entry">
             <div class="entry-head">
@@ -343,7 +327,7 @@
               <li>
                 <span
                   >Small Spark, my own company, building Ruby on Rails
-                  e-commerce sites for clients</span
+                  e-commerce sites</span
                 >
                 <span class="dates"
                   ><time datetime="2009">2009</time>–<time datetime="2010"
@@ -393,17 +377,16 @@
         <h2 id="standards-heading">Standards and speaking</h2>
         <div class="body">
           <p>
-            I co-lead the <abbr>SQL</abbr> on <abbr>FHIR</abbr> project within
-            HL7 International and represent <abbr>CSIRO</abbr> at HL7 Working
-            Group Meetings, contributing to the <abbr>FHIR</abbr> specification
-            and its tooling, including the <abbr>FHIR</abbr> IG Publisher. I ran
-            the <abbr>SQL</abbr> on <abbr>FHIR</abbr> track at the HL7
-            International connectathon in Rotterdam and have led tracks at HL7
-            Australia connectathons.
+            I represent <abbr>CSIRO</abbr> at HL7 Working Group Meetings,
+            contributing to the <abbr>FHIR</abbr> specification and its tooling,
+            including the <abbr>FHIR</abbr> IG Publisher. I ran the
+            <abbr>SQL</abbr> on <abbr>FHIR</abbr> track at the HL7 International
+            connectathon in Rotterdam and have led tracks at HL7 Australia
+            connectathons.
           </p>
           <p class="venues">
             Speaker at <abbr>MEDINFO</abbr>, HL7 <abbr>FHIR</abbr> DevDays,
-            <abbr>SNOMED CT</abbr> Expo and HL7 International connectathons.
+            <abbr>SNOMED CT</abbr> Expo and HL7 connectathons.
           </p>
         </div>
       </section>
@@ -448,8 +431,7 @@
             </li>
             <li>
               <cite><abbr>MCP</abbr> <abbr>FHIR</abbr> Tools</cite> (2025).
-              <abbr>FHIR</abbr> tools for language models, via the Model Context
-              Protocol.
+              <abbr>FHIR</abbr> tools for language model agents.
               <a href="https://doi.org/10.25919/n7r2-rw40"
                 >doi:10.25919/n7r2-rw40</a
               >

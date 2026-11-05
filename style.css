@@ -147,8 +147,10 @@ a:focus-visible {
 
 /* Masthead */
 
+/* The contact links' 44px tap targets add space of their own, so the
+   margins around them are smaller than the type alone would need. */
 header {
-  padding-block: clamp(2.5rem, 8vw, 5rem) 2.25rem;
+  padding-block: clamp(2.5rem, 8vw, 5rem) 1.75rem;
 }
 
 h1 {
@@ -160,7 +162,7 @@ h1 {
 }
 
 .headline {
-  margin: 0.6rem 0 1.4rem;
+  margin: 0.6rem 0 0.8rem;
   color: var(--accent);
   font-family: var(--sans);
   font-size: 1rem;
@@ -172,15 +174,25 @@ h1 {
 .contact {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.25rem 1.25rem;
+  align-items: center;
+  gap: 0 1.25rem;
   margin: 0;
   color: var(--muted);
   font-family: var(--sans);
   font-size: 0.875rem;
 }
 
+/* Links are at least 44px tall so they are easy to tap. */
 .contact a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
   color: var(--ink);
+}
+
+/* Profile links show the service name on screen and the address on paper. */
+.print {
+  display: none;
 }
 
 /* Sections: a label column on the left and a measure of text on the right. */
@@ -226,6 +238,13 @@ h2 {
   margin-top: 1.6rem;
 }
 
+/* Explains overlapping dates in the entries that follow. */
+.note {
+  margin: 1.6rem 0 0.4rem;
+  color: var(--muted);
+  font-style: italic;
+}
+
 .entry-head {
   display: flex;
   flex-wrap: wrap;
@@ -242,7 +261,6 @@ h3 {
 }
 
 .dates,
-.tech,
 dt,
 footer {
   color: var(--muted);
@@ -259,11 +277,6 @@ footer {
 .role {
   margin: 0.05rem 0 0.5rem;
   font-style: italic;
-}
-
-.tech {
-  margin: 0.5rem 0 0;
-  font-size: 0.8125rem;
 }
 
 .entry ul {
@@ -392,9 +405,14 @@ footer p {
 }
 
 @media (width <= 44rem) {
+  header {
+    padding-bottom: 1rem;
+  }
+
   main > section {
     flex-direction: column;
     gap: 0.75rem;
+    padding-block: 1.25rem;
   }
 
   h2 {
@@ -418,7 +436,7 @@ footer p {
 
 @page {
   size: a4;
-  margin: 12mm 15mm 11mm;
+  margin: 10mm 14mm;
 }
 
 @media print {
@@ -436,10 +454,20 @@ footer p {
     font-size: 8.5pt;
   }
 
+  /* Body text is set in points so it stays at a readable 10pt while labels
+     keep the smaller rem scale. */
   body {
-    font-size: 1.06rem;
-    line-height: 1.33;
+    font-size: 10pt;
+    line-height: 1.25;
     -webkit-font-smoothing: auto;
+  }
+
+  .screen {
+    display: none;
+  }
+
+  .print {
+    display: inline;
   }
 
   p,
@@ -455,10 +483,6 @@ footer p {
     margin-bottom: 0.3rem;
   }
 
-  .tech {
-    margin-top: 0.25rem;
-  }
-
   .citations li {
     margin-bottom: 0.25em;
   }
@@ -469,15 +493,12 @@ footer p {
 
   .contact,
   .dates,
-  .tech,
-  dt,
-  footer {
+  dt {
     font-size: 0.95rem;
   }
 
   header,
-  main,
-  footer {
+  main {
     max-width: none;
     padding-inline: 0;
   }
@@ -495,35 +516,39 @@ footer p {
   }
 
   main > section {
-    padding-block: 0.6rem;
+    padding-block: 0.5rem;
   }
 
   a {
     text-decoration: none;
   }
 
-  .entry + .entry,
-  .minor {
-    margin-top: 0.65rem;
+  .contact a {
+    min-height: 0;
   }
 
+  /* Keep each entry whole, so no page starts with a stray bullet. */
+  .entry,
   .minor,
-  .entry li,
   .skills div,
   .citations li {
     break-inside: avoid;
   }
 
+  .entry + .entry,
+  .minor,
+  .note {
+    margin-top: 0.55rem;
+  }
+
   h3,
-  .entry-head {
+  .entry-head,
+  .note {
     break-after: avoid;
   }
 
+  /* The colophon describes the web page, so it is left off paper. */
   footer {
-    padding-block: 0;
-  }
-
-  footer p {
-    padding-top: 0.8rem;
+    display: none;
   }
 }

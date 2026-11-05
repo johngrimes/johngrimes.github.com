@@ -27,9 +27,12 @@ bun run test         # browser tests
 ```
 
 The tests check the agreed content decisions, accessibility (axe) in light and
-dark modes, layout at 320px, and that printing produces at most two A4 pages.
-Content that pushes the print layout onto a third page fails the build, so
-trim before adding.
+dark modes, layout at 320px, that the first selected-work outcome and 44px
+contact links appear on a 390px phone screen, and the print output: at most two
+A4 pages, 10pt body text, and every page after the first starting at a heading.
+Print entries are never split across pages, so an entry that does not fit at
+the foot of a page moves whole to the next. Content that pushes the layout onto
+a third page fails the build, so trim before adding.
 
 ## Fonts
 

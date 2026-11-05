@@ -7,11 +7,50 @@
  */
 
 import AxeBuilder from "@axe-core/playwright";
-import { expect, test } from "@playwright/test";
-import { PDFDocument } from "pdf-lib";
+import { expect, test, type Page } from "@playwright/test";
+import { getDocument } from "pdfjs-dist/legacy/build/pdf.mjs";
 
 // A4 in PostScript points, as reported by PDF page boxes.
 const A4 = { width: 595.28, height: 841.89 };
+
+// 10pt in CSS pixels (1pt = 4/3px).
+const TEN_POINT_PX = 40 / 3;
+
+/**
+ * Prints the page to PDF as the browser would and returns each page's size
+ * and text.
+ *
+ * @param page - The Playwright page, already loaded.
+ * @returns One entry per PDF page, with width and height in points.
+ */
+const printPages = async (page: Page) => {
+  await page.evaluate(() => document.fonts.ready);
+  // preferCSSPageSize makes the stylesheet's @page rule decide the size,
+  // as it does when printing from the browser.
+  const data = await page.pdf({
+    preferCSSPageSize: true,
+    printBackground: true,
+  });
+  const pdf = await getDocument({ data: new Uint8Array(data) }).promise;
+  const pages = [];
+  for (let n = 1; n <= pdf.numPages; n++) {
+    const p = await pdf.getPage(n);
+    const { width, height } = p.getViewport({ scale: 1 });
+    const { items } = await p.getTextContent();
+    // Text arrives in paint order, so sort it top to bottom, then left to
+    // right, to get the order a reader sees. PDF y runs upwards.
+    const text = items
+      .flatMap((item) =>
+        "str" in item && item.str.trim()
+          ? [{ str: item.str, x: item.transform[4], y: item.transform[5] }]
+          : [],
+      )
+      .sort((a, b) => Math.round(b.y) - Math.round(a.y) || a.x - b.x)
+      .map((item) => item.str);
+    pages.push({ width, height, text: text.join(" ") });
+  }
+  return pages;
+};
 
 // ---------------------------------------------------------------------------
 // Content and structure
@@ -243,6 +282,52 @@ test("does not scroll horizontally on a 320px-wide screen", async ({
   expect(overflow).toBeLessThanOrEqual(0);
 });
 
+test("shows the first selected-work outcome without scrolling on a phone", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+  await page.evaluate(() => document.fonts.ready);
+  // The evidence, not just the profile, has to reach the first screen.
+  await expect(page.locator("#selected-work .entry li").first()).toBeInViewport(
+    { ratio: 0.5 },
+  );
+});
+
+test("gives contact links touch targets at least 44px tall on a phone", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+  for (const link of await page.locator("header .contact a").all()) {
+    expect((await link.boundingBox())!.height).toBeGreaterThanOrEqual(44);
+  }
+});
+
+test("labels profile links by service on screen and by address in print", async ({
+  page,
+}) => {
+  const addresses = [
+    "github.com/johngrimes",
+    "linkedin.com/in/johngrimes",
+    "orcid.org/0000-0002-9575-7641",
+  ];
+  await page.goto("/");
+  // On screen the links are tappable, so short names are enough.
+  for (const name of ["GitHub", "LinkedIn", "ORCID"]) {
+    await expect(page.getByRole("link", { name, exact: true })).toBeVisible();
+  }
+  const contact = page.locator("header .contact");
+  for (const address of addresses) {
+    await expect(contact).not.toContainText(address, { useInnerText: true });
+  }
+  // On paper the reader has to type the address, so print it in full.
+  await page.emulateMedia({ media: "print" });
+  for (const address of addresses) {
+    await expect(contact).toContainText(address, { useInnerText: true });
+  }
+});
+
 // ---------------------------------------------------------------------------
 // Print
 // ---------------------------------------------------------------------------
@@ -250,17 +335,44 @@ test("does not scroll horizontally on a 320px-wide screen", async ({
 test.describe("print", () => {
   test("prints to no more than two A4 pages", async ({ page }) => {
     await page.goto("/");
-    await page.evaluate(() => document.fonts.ready);
-    // preferCSSPageSize makes the stylesheet's @page rule decide the size,
-    // as it does when printing from the browser.
-    const pdf = await PDFDocument.load(
-      await page.pdf({ preferCSSPageSize: true, printBackground: true }),
-    );
-    const pages = pdf.getPages();
+    const pages = await printPages(page);
     expect(pages.length).toBeLessThanOrEqual(2);
     for (const p of pages) {
-      expect(p.getWidth()).toBeCloseTo(A4.width, 0);
-      expect(p.getHeight()).toBeCloseTo(A4.height, 0);
+      expect(p.width).toBeCloseTo(A4.width, 0);
+      expect(p.height).toBeCloseTo(A4.height, 0);
+    }
+  });
+
+  test("starts every continuation page at a heading, not mid-entry", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    // A page may open with a heading, or with a note that introduces the
+    // entries below it. Compare without case or whitespace: small caps and
+    // line breaks differ between the DOM and the PDF text layer.
+    const starts = (
+      await page.locator("main h2, main h3, main .note").allTextContents()
+    ).map((h) => h.replace(/\s+/g, "").toLowerCase());
+    const pages = await printPages(page);
+    for (const p of pages.slice(1)) {
+      const text = p.text.replace(/\s+/g, "").toLowerCase();
+      // A page that opens with a stray bullet has lost its role and employer.
+      expect(
+        starts.some((s) => text.startsWith(s)),
+        `page starts: ${p.text.slice(0, 60)}`,
+      ).toBe(true);
+    }
+  });
+
+  test("sets printed body text at no less than 10pt", async ({ page }) => {
+    await page.emulateMedia({ media: "print" });
+    await page.goto("/");
+    for (const selector of ["#profile p", "#experience .entry li"]) {
+      const size = await page
+        .locator(selector)
+        .first()
+        .evaluate((el) => parseFloat(getComputedStyle(el).fontSize));
+      expect(size, selector).toBeGreaterThanOrEqual(TEN_POINT_PX - 0.01);
     }
   });
 
