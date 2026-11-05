@@ -34,10 +34,18 @@ const APERTURE = 0.016 / 0.12;
 // Largest blur radius in frame widths, reached at about 1.5 m.
 const MAX_BLUR = 0.016;
 
-// Approximate number of samples the blur takes for each pixel.
-const BLUR_SAMPLES = 160;
+// Resolution of the blur pass relative to the scene render. The blur is
+// soft, so gathering it at half resolution costs a quarter as much and
+// looks the same; the composite keeps the scene sharp where it is in focus.
+const BLUR_SCALE = 0.5;
 
-// Multisampling of the scene render, for smooth edges.
+// Approximate number of samples the blur takes for each pixel. At the
+// largest blur this spaces them about 3 px of the blur target apart, which
+// still looks smooth because each sample reads a filtered full-size scene.
+const BLUR_SAMPLES = 32;
+
+// Multisampling of the scene render, so that thin parts such as poles and
+// rods stay whole rather than breaking into dashes.
 const SAMPLES = 4;
 
 const SCENE_VERTEX = /* glsl */ `
@@ -97,7 +105,7 @@ const SCENE_FRAGMENT = /* glsl */ `
   }
 `;
 
-const BLUR_VERTEX = /* glsl */ `
+const PASS_VERTEX = /* glsl */ `
   varying vec2 vUv;
 
   void main() {
@@ -110,6 +118,8 @@ const BLUR_VERTEX = /* glsl */ `
 // neighbour when its own blur disc reaches this pixel, so blurred foreground
 // spreads over sharp background but not the other way round. Every output is
 // an average of palette colours, so it stays on the paper to extreme segment.
+// Alpha holds the widest blur of nearer neighbours that reached the pixel,
+// as a share of maxRadius, for the composite.
 const BLUR_FRAGMENT = /* glsl */ `
   uniform sampler2D image;
   uniform vec2 texel;
@@ -132,6 +142,7 @@ const BLUR_FRAGMENT = /* glsl */ `
     float centreRadius = blurRadius(centre.a);
     vec3 colour = centre.rgb;
     float total = 1.0;
+    float reach = 0.0;
     float radius = spacing;
     for (int i = 0; i < 1024; i++) {
       if (radius >= maxRadius) {
@@ -146,9 +157,35 @@ const BLUR_FRAGMENT = /* glsl */ `
       float m = smoothstep(radius - 0.5, radius + 0.5, tapRadius);
       colour += mix(colour / total, tap.rgb, m);
       total += 1.0;
+      if (tap.a < centre.a) {
+        reach = max(reach, m * radius);
+      }
       radius += spacing / radius;
     }
-    gl_FragColor = vec4(colour / total, 1.0);
+    gl_FragColor = vec4(colour / total, reach / maxRadius);
+  }
+`;
+
+// Shows the blurred image wherever the pixel's own blur, or that of nearer
+// neighbours spreading over it, is wider than about one scene pixel (half a
+// pixel of the blur target), and the sharp scene elsewhere, so thin sharp
+// parts keep their full resolution. Both are palette colours, and so is any
+// mix of them. Radii are in pixels of the blur target.
+const COMPOSITE_FRAGMENT = /* glsl */ `
+  uniform sampler2D sharp;
+  uniform sampler2D soft;
+  uniform float inverseFocus;
+  uniform float radiusScale;
+  uniform float maxRadius;
+
+  varying vec2 vUv;
+
+  void main() {
+    vec4 scene = texture2D(sharp, vUv);
+    vec4 blurred = texture2D(soft, vUv);
+    float own = radiusScale * abs(inverseFocus - (1.0 - scene.a));
+    float t = smoothstep(0.5, 1.0, max(own, blurred.a * maxRadius));
+    gl_FragColor = vec4(mix(scene.rgb, blurred.rgb, t), 1.0);
   }
 `;
 
@@ -286,9 +323,8 @@ async function mountScene(container, { manifest, assets, scheme }) {
   );
   const scene = gltf.scene;
   const canvas = document.createElement("canvas");
-  const quad = createQuad(three, manifest);
+  const pipeline = createPipeline(three, manifest);
   let renderer = null;
-  let target = null;
   let view = null;
   let offset = { x: 0, y: 0 };
   let size = "";
@@ -304,9 +340,7 @@ async function mountScene(container, { manifest, assets, scheme }) {
       object.geometry?.dispose();
       object.material?.dispose();
     });
-    quad.mesh.geometry.dispose();
-    quad.mesh.material.dispose();
-    target?.dispose();
+    pipeline.dispose();
     renderer?.dispose();
     renderer?.forceContextLoss();
     canvas.remove();
@@ -325,18 +359,14 @@ async function mountScene(container, { manifest, assets, scheme }) {
       size = `${width}x${height}@${ratio}`;
       renderer.setPixelRatio(ratio);
       renderer.setSize(width, height);
-      target.setSize(Math.round(width * ratio), Math.round(height * ratio));
-      quad.resize(
-        target.width,
-        target.height,
+      pipeline.resize(
+        Math.round(width * ratio),
+        Math.round(height * ratio),
         coverScale(width, height, manifest.aspect) * ratio,
       );
     }
     view.place(offset, width, height);
-    renderer.setRenderTarget(target);
-    renderer.render(scene, view.camera);
-    renderer.setRenderTarget(null);
-    renderer.render(quad.mesh, quad.camera);
+    pipeline.render(renderer, scene, view.camera);
   };
 
   try {
@@ -360,8 +390,6 @@ async function mountScene(container, { manifest, assets, scheme }) {
       ),
       1,
     );
-    target = new three.WebGLRenderTarget(1, 1, { samples: SAMPLES });
-    quad.mesh.material.uniforms.image.value = target.texture;
     draw();
     container.append(canvas);
     addEventListener("resize", draw);
@@ -511,15 +539,21 @@ function shadeScene(three, scene, manifest, scheme) {
 }
 
 /**
- * Creates the full-screen pass that applies the depth of field.
+ * Creates the render targets and full-screen passes that draw the scene
+ * with depth of field: the scene at full resolution, the blur gathered at
+ * BLUR_SCALE of it, and a composite that keeps the sharp image wherever the
+ * blur is under a pixel.
  *
  * @param {object} three - The three.js module.
  * @param {object} manifest - The parsed scene.json.
- * @returns {{mesh: object, camera: object, resize: (width: number, height:
- *   number, pixelsPerFrame: number) => void}} The pass, with a function that
- *   sets its blur sizes for a render target size and scale in device px.
+ * @returns {{resize: (width: number, height: number, pixelsPerFrame: number)
+ *   => void, render: (renderer: object, scene: object, camera: object) =>
+ *   void, dispose: () => void}} The pipeline, with functions to size it in
+ *   device px, to draw a frame to the canvas and to release it.
  */
-function createQuad(three, manifest) {
+function createPipeline(three, manifest) {
+  const sharp = new three.WebGLRenderTarget(1, 1, { samples: SAMPLES });
+  const soft = new three.WebGLRenderTarget(1, 1);
   const geometry = new three.BufferGeometry();
   geometry.setAttribute(
     "position",
@@ -528,38 +562,73 @@ function createQuad(three, manifest) {
       3,
     ),
   );
-  const material = new three.ShaderMaterial({
-    uniforms: {
-      image: { value: null },
-      texel: { value: [1, 1] },
-      inverseFocus: { value: 1 / manifest.focus },
-      radiusScale: { value: 0 },
-      maxRadius: { value: 0 },
-      spacing: { value: 0.5 },
-    },
-    vertexShader: BLUR_VERTEX,
-    fragmentShader: BLUR_FRAGMENT,
-    depthTest: false,
-    depthWrite: false,
+  const pass = (fragmentShader, uniforms) => {
+    const mesh = new three.Mesh(
+      geometry,
+      new three.ShaderMaterial({
+        uniforms,
+        vertexShader: PASS_VERTEX,
+        fragmentShader,
+        depthTest: false,
+        depthWrite: false,
+      }),
+    );
+    mesh.frustumCulled = false;
+    return mesh;
+  };
+  // Blur sizes, in pixels of the blur target, used by both passes.
+  const sizes = {
+    inverseFocus: { value: 1 / manifest.focus },
+    radiusScale: { value: 0 },
+    maxRadius: { value: 0 },
+  };
+  const blur = pass(BLUR_FRAGMENT, {
+    ...sizes,
+    image: { value: sharp.texture },
+    texel: { value: [1, 1] },
+    spacing: { value: 0.5 },
   });
-  const mesh = new three.Mesh(geometry, material);
-  mesh.frustumCulled = false;
-  const { uniforms } = material;
+  const composite = pass(COMPOSITE_FRAGMENT, {
+    ...sizes,
+    sharp: { value: sharp.texture },
+    soft: { value: soft.texture },
+  });
+  const camera = new three.OrthographicCamera();
 
   return {
-    mesh,
-    camera: new three.OrthographicCamera(),
     resize(width, height, pixelsPerFrame) {
-      const maxRadius = MAX_BLUR * pixelsPerFrame;
-      uniforms.texel.value = [1 / width, 1 / height];
-      uniforms.radiusScale.value =
-        0.5 * manifest.focal * APERTURE * pixelsPerFrame;
-      uniforms.maxRadius.value = maxRadius;
+      sharp.setSize(width, height);
+      soft.setSize(
+        Math.ceil(width * BLUR_SCALE),
+        Math.ceil(height * BLUR_SCALE),
+      );
+      // The blur works in pixels of its own, smaller target.
+      const scale = pixelsPerFrame * BLUR_SCALE;
+      const maxRadius = MAX_BLUR * scale;
+      const { uniforms } = blur.material;
+      uniforms.texel.value = [1 / soft.width, 1 / soft.height];
+      sizes.radiusScale.value = 0.5 * manifest.focal * APERTURE * scale;
+      sizes.maxRadius.value = maxRadius;
       // The spiral takes about maxRadius^2 / (2 * spacing) samples.
       uniforms.spacing.value = Math.max(
         0.5,
         (maxRadius * maxRadius) / (2 * BLUR_SAMPLES),
       );
+    },
+    render(renderer, scene, view) {
+      renderer.setRenderTarget(sharp);
+      renderer.render(scene, view);
+      renderer.setRenderTarget(soft);
+      renderer.render(blur, camera);
+      renderer.setRenderTarget(null);
+      renderer.render(composite, camera);
+    },
+    dispose() {
+      geometry.dispose();
+      blur.material.dispose();
+      composite.material.dispose();
+      sharp.dispose();
+      soft.dispose();
     },
   };
 }
