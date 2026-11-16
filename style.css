@@ -100,22 +100,6 @@ h3 {
   text-wrap: balance;
 }
 
-/* Acronyms in true small caps keep runs of FHIR, SQL and CSIRO from
-   shouting over the text around them. */
-abbr {
-  font-variant-caps: all-small-caps;
-  letter-spacing: 0.04em;
-  text-decoration: none;
-  white-space: nowrap;
-}
-
-/* The italic has no small caps, so acronyms in italic text keep full caps
-   rather than let the browser synthesise poor ones. */
-:is(cite, .role) abbr {
-  font-variant-caps: normal;
-  letter-spacing: normal;
-}
-
 a {
   color: inherit;
   text-decoration-line: underline;
