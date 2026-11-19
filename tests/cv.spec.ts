@@ -449,6 +449,46 @@ test.describe("typography", () => {
       expect(offset, name).toBeLessThan(0.5);
     }
   });
+
+  test("aligns ledger dates with the last line of wrapped text", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    await page.evaluate(() => document.fonts.ready);
+    const rows = await page.evaluate(() => {
+      // An empty inline-block sits on the baseline of the line it is placed
+      // in, so appending one to the text marks the baseline of its last line.
+      const mark = (el: Element, where: "afterbegin" | "beforeend") => {
+        const m = document.createElement("span");
+        m.style.display = "inline-block";
+        el.insertAdjacentElement(where, m);
+        const y = m.getBoundingClientRect().bottom;
+        m.remove();
+        return y;
+      };
+      return [...document.querySelectorAll(".ledger li")].map((li) => {
+        const text = li.querySelector("span:not(.dates)")!;
+        const range = document.createRange();
+        range.selectNodeContents(text);
+        const bottoms = [...range.getClientRects()].map((r) =>
+          Math.round(r.bottom),
+        );
+        return {
+          name: text.textContent!.trim().slice(0, 30),
+          lines: new Set(bottoms).size,
+          offset: Math.abs(
+            mark(text, "beforeend") -
+              mark(li.querySelector(".dates")!, "afterbegin"),
+          ),
+        };
+      });
+    });
+    // Guard against the test passing vacuously if nothing wraps.
+    expect(rows.some((r) => r.lines > 1)).toBe(true);
+    for (const { name, offset } of rows) {
+      expect(offset, name).toBeLessThan(0.5);
+    }
+  });
 });
 
 // ---------------------------------------------------------------------------
