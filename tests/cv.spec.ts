@@ -213,6 +213,16 @@ test.describe("content", () => {
         "wFAYye7hM-c",
       ].map((id) => `https://www.youtube.com/watch?v=${id}`),
     );
+    // Each talk names the event and where it was held.
+    await expect(talks.locator("span:not(.dates)")).toHaveText([
+      /, FHIR DevDays, Minneapolis$/,
+      /, FHIR DevDays, Minneapolis$/,
+      /, SNOMED CT Expo, Atlanta$/,
+      /, SNOMED CT Expo, Lisbon$/,
+      /, SNOMED CT Expo, online$/,
+      /, FHIR DevDays, Amsterdam$/,
+      /, FHIR DevDays, Amsterdam$/,
+    ]);
   });
 
   test("lists the selected open source software", async ({ page }) => {
