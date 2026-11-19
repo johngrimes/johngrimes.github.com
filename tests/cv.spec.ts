@@ -546,75 +546,169 @@ test("labels profile links by service on screen and by address in print", async 
 // ---------------------------------------------------------------------------
 
 /**
- * Reads how far the headline mark has turned at each of the given fractions
- * of its running animation, by pausing the animation and seeking through it.
+ * Pauses the headline mark's spin and reads how far the mark is turned about
+ * its vertical axis at each of the given fractions of the spin's duration.
+ * The spin is left paused at the last fraction.
  *
  * @param page - The Playwright page showing the CV.
- * @param fractions - Points in the animation, from 0 (start) to 1 (end).
- * @returns The rotation in degrees at each fraction, or null if the mark is
- *   not animating.
+ * @param fractions - Points in the spin, from 0 (start) to just short of 1
+ *   (end).
+ * @returns The spin's duration in milliseconds, the turn at each fraction in
+ *   degrees between -180 and 180, and whether the vertical axis stayed in
+ *   place at every fraction; or null if the mark is not spinning.
  * @example
- * // Rotation at the start and half way through the spin.
- * const [start, middle] = (await markRotation(page, [0, 0.5]))!;
+ * // The turn at the start and half way through the spin.
+ * const { angles } = (await markSpin(page, [0, 0.5]))!;
  */
-const markRotation = async (page: Page, fractions: number[]) =>
+const markSpin = async (page: Page, fractions: number[]) =>
   page.locator(".mark").evaluate((mark, fractions) => {
     const [spin] = mark.getAnimations();
     if (!spin) return null;
     spin.pause();
     const duration = Number(spin.effect!.getComputedTiming().endTime);
-    return fractions.map((fraction) => {
+    let vertical = true;
+    const angles = fractions.map((fraction) => {
       spin.currentTime = duration * fraction;
-      return parseFloat(getComputedStyle(mark).rotate) || 0;
+      const m = new DOMMatrix(getComputedStyle(mark).transform);
+      // Turning about the vertical axis leaves that axis where it was.
+      vertical &&= [m.m21, m.m22 - 1, m.m23, m.m24].every(
+        (value) => Math.abs(value) < 1e-4,
+      );
+      return (Math.atan2(-m.m13, m.m11) * 180) / Math.PI;
     });
+    return { duration, angles, vertical };
   }, fractions);
 
 /**
- * Counts the animations running on the headline mark.
+ * Adds up successive readings of the mark's turn, which wrap at half a turn,
+ * into the total turned since the first reading.
+ *
+ * @param angles - Readings in degrees, each less than half a turn on from
+ *   the one before.
+ * @returns The degrees turned at each reading, starting from zero.
+ * @example
+ * turned([0, 170, -20]); // [0, 170, 340]
+ */
+const turned = (angles: number[]) => {
+  let total = 0;
+  return angles.map((angle, i) => {
+    if (i > 0) total += ((angle - angles[i - 1] + 540) % 360) - 180;
+    return total;
+  });
+};
+
+/**
+ * Measures how far an angle is from the nearest half turn. The mark is
+ * symmetrical, so it looks the same after every half turn.
+ *
+ * @param angle - An angle in degrees.
+ * @returns The distance to the nearest multiple of 180 degrees.
+ */
+const fromHalfTurn = (angle: number) =>
+  Math.abs(angle - Math.round(angle / 180) * 180);
+
+/**
+ * Reports whether the headline mark is in motion.
  *
  * @param page - The Playwright page showing the CV.
- * @returns The number of animations; zero when the mark is still.
+ * @returns True if an animation is running on the mark.
  */
-const markAnimations = async (page: Page) =>
-  page.locator(".mark").evaluate((mark) => mark.getAnimations().length);
+const markSpinning = async (page: Page) =>
+  page
+    .locator(".mark")
+    .evaluate((mark) =>
+      mark.getAnimations().some((spin) => spin.playState === "running"),
+    );
 
 test.describe("motion", () => {
-  test("spins the mark fast then slows it to rest when the headline is hovered", async ({
+  test("spins the mark about its vertical axis, fast then slowing to rest, when the headline is hovered", async ({
     page,
   }) => {
     await page.goto("/");
     // The mark is still until the pointer arrives.
-    expect(await markAnimations(page)).toBe(0);
+    expect(await markSpinning(page)).toBe(false);
     await page.locator(".headline").hover();
-    const angles = await markRotation(page, [0, 0.25, 0.5, 0.75, 0.999]);
-    expect(angles).not.toBeNull();
-    const [start, quarter, half, threeQuarters, end] = angles!;
-    expect(start).toBe(0);
-    // A few turns, ending on a whole turn so the mark rests as it started.
+    // Two hundred readings, so that the fastest part of the spin moves much
+    // less than half a turn between one reading and the next.
+    const spin = await markSpin(
+      page,
+      Array.from({ length: 201 }, (_, i) => (i / 200) * 0.999),
+    );
+    expect(spin).not.toBeNull();
+    // It turns like a coin on its edge, not like a wheel.
+    expect(spin!.vertical).toBe(true);
+    const total = turned(spin!.angles);
+    const [quarter, half, threeQuarters, end] = [50, 100, 150, 200].map(
+      (i) => total[i],
+    );
+    expect(spin!.angles[0]).toBeCloseTo(0);
+    // A few turns, ending face on so the mark rests as it started.
     expect(end).toBeGreaterThan(719);
-    expect(Math.abs(end - Math.round(end / 360) * 360)).toBeLessThan(1);
+    expect(fromHalfTurn(end)).toBeLessThan(1);
     // Most of the turning happens early.
     expect(quarter).toBeGreaterThan(end / 2);
-    // Each quarter of the animation turns the mark less than the one before.
-    const turned = [
-      quarter - start,
+    // Each quarter of the spin turns the mark less than the one before.
+    const quarters = [
+      quarter,
       half - quarter,
       threeQuarters - half,
       end - threeQuarters,
     ];
-    for (let i = 1; i < turned.length; i++) {
-      expect(turned[i], `quarter ${i + 1}`).toBeLessThan(turned[i - 1]);
+    for (let i = 1; i < quarters.length; i++) {
+      expect(quarters[i], `quarter ${i + 1}`).toBeLessThan(quarters[i - 1]);
     }
     // Once the spin ends the mark stays still, even with the pointer still
     // on the headline.
-    const rest = await page.locator(".mark").evaluate((mark) => {
+    const transform = await page.locator(".mark").evaluate((mark) => {
       mark.getAnimations()[0].finish();
-      return {
-        animations: mark.getAnimations().length,
-        rotate: getComputedStyle(mark).rotate,
-      };
+      return getComputedStyle(mark).transform;
     });
-    expect(rest).toEqual({ animations: 0, rotate: "none" });
+    expect(transform).toBe("none");
+    expect(await markSpinning(page)).toBe(false);
+  });
+
+  test("keeps the mark spinning after the pointer leaves the headline", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    await page.locator(".headline").hover();
+    await page.mouse.move(0, 0);
+    expect(await markSpinning(page)).toBe(true);
+  });
+
+  test("returns the mark to full speed, without a jump, when the pointer comes back mid-spin", async ({
+    page,
+  }) => {
+    // Reads the mark's turn at a point in the spin and its speed there, in
+    // degrees per millisecond, over a short stretch that follows.
+    const stretch = 0.002;
+    const reading = async (fraction: number) => {
+      const { duration, angles } = (await markSpin(page, [
+        fraction,
+        fraction + stretch,
+      ]))!;
+      return {
+        from: angles[0],
+        to: angles[1],
+        speed: turned(angles)[1] / (stretch * duration),
+      };
+    };
+    await page.goto("/");
+    await page.locator(".headline").hover();
+    const full = await reading(0);
+    // Well into the spin the mark has slowed. The spin stays paused here, so
+    // the turn it has reached when the pointer comes back is known.
+    const slowed = await reading(0.6);
+    expect(slowed.speed).toBeLessThan(full.speed / 2);
+    await page.mouse.move(0, 0);
+    await page.locator(".headline").hover();
+    const restarted = await reading(0);
+    // The mark carries on from where it was, and as fast as a fresh spin.
+    expect(fromHalfTurn(restarted.from - slowed.to)).toBeLessThan(1);
+    expect(Math.abs(restarted.speed / full.speed - 1)).toBeLessThan(0.05);
+    // It still comes to rest face on.
+    const { angles } = (await markSpin(page, [0.999]))!;
+    expect(fromHalfTurn(angles[0])).toBeLessThan(1);
   });
 
   test("keeps the mark still when the pointer is beside the headline text", async ({
@@ -630,7 +724,7 @@ test.describe("motion", () => {
       return { right, middle: top + height / 2 };
     });
     await page.mouse.move(analytics.right + 100, analytics.middle);
-    expect(await markAnimations(page)).toBe(0);
+    expect(await markSpinning(page)).toBe(false);
   });
 
   test("keeps the mark still for readers who prefer reduced motion", async ({
@@ -639,7 +733,7 @@ test.describe("motion", () => {
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto("/");
     await page.locator(".headline").hover();
-    expect(await markAnimations(page)).toBe(0);
+    expect(await markSpinning(page)).toBe(false);
   });
 });
 

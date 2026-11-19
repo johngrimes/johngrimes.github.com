@@ -181,20 +181,6 @@ h1 {
   vertical-align: -0.15em;
 }
 
-/* Hovering the headline spins the mark: fast at first, then slowing to rest
-   after four whole turns, which leaves it as it started. */
-@media (prefers-reduced-motion: no-preference) {
-  .headline:hover .mark {
-    animation: spin 2.5s cubic-bezier(0.33, 1, 0.68, 1);
-  }
-}
-
-@keyframes spin {
-  to {
-    rotate: 4turn;
-  }
-}
-
 .contact {
   display: flex;
   flex-wrap: wrap;

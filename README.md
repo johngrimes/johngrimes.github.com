@@ -2,14 +2,15 @@
 
 Source for [john.grimes.id.au](https://john.grimes.id.au/), a single-page CV.
 
-The page is hand-written HTML and CSS with no build step. GitHub Pages serves
-the repository root from `master`; `.nojekyll` stops Pages from running Jekyll
-over it. The old `/cv` address redirects to `/`.
+The page is hand-written HTML, CSS and one small script, with no build step.
+GitHub Pages serves the repository root from `master`; `.nojekyll` stops Pages
+from running Jekyll over it. The old `/cv` address redirects to `/`.
 
 | File            | Purpose                                    |
 | --------------- | ------------------------------------------ |
 | `index.html`    | The CV                                     |
 | `style.css`     | Screen, dark mode and A4 print styles      |
+| `spin.js`       | Spins the headline mark on hover           |
 | `fonts/`        | Subset WOFF2 fonts and their licences      |
 | `cv/index.html` | Redirect from the old CV address           |
 | `tests/`        | Browser tests and the local preview server |
