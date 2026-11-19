@@ -160,7 +160,10 @@ h1 {
   letter-spacing: -0.01em;
 }
 
+/* Only as wide as its text, so that hovering the space beside it does not
+   spin the mark. */
 .headline {
+  width: fit-content;
   margin: 0.6rem 0 0.8rem;
   color: var(--accent);
   font-family: var(--sans);
@@ -176,6 +179,20 @@ h1 {
   height: 1em;
   margin-inline: 0.1em;
   vertical-align: -0.15em;
+}
+
+/* Hovering the headline spins the mark: fast at first, then slowing to rest
+   after four whole turns, which leaves it as it started. */
+@media (prefers-reduced-motion: no-preference) {
+  .headline:hover .mark {
+    animation: spin 2.5s cubic-bezier(0.33, 1, 0.68, 1);
+  }
+}
+
+@keyframes spin {
+  to {
+    rotate: 4turn;
+  }
 }
 
 .contact {

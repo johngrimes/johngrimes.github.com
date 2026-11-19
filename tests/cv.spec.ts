@@ -542,6 +542,108 @@ test("labels profile links by service on screen and by address in print", async 
 });
 
 // ---------------------------------------------------------------------------
+// Motion
+// ---------------------------------------------------------------------------
+
+/**
+ * Reads how far the headline mark has turned at each of the given fractions
+ * of its running animation, by pausing the animation and seeking through it.
+ *
+ * @param page - The Playwright page showing the CV.
+ * @param fractions - Points in the animation, from 0 (start) to 1 (end).
+ * @returns The rotation in degrees at each fraction, or null if the mark is
+ *   not animating.
+ * @example
+ * // Rotation at the start and half way through the spin.
+ * const [start, middle] = (await markRotation(page, [0, 0.5]))!;
+ */
+const markRotation = async (page: Page, fractions: number[]) =>
+  page.locator(".mark").evaluate((mark, fractions) => {
+    const [spin] = mark.getAnimations();
+    if (!spin) return null;
+    spin.pause();
+    const duration = Number(spin.effect!.getComputedTiming().endTime);
+    return fractions.map((fraction) => {
+      spin.currentTime = duration * fraction;
+      return parseFloat(getComputedStyle(mark).rotate) || 0;
+    });
+  }, fractions);
+
+/**
+ * Counts the animations running on the headline mark.
+ *
+ * @param page - The Playwright page showing the CV.
+ * @returns The number of animations; zero when the mark is still.
+ */
+const markAnimations = async (page: Page) =>
+  page.locator(".mark").evaluate((mark) => mark.getAnimations().length);
+
+test.describe("motion", () => {
+  test("spins the mark fast then slows it to rest when the headline is hovered", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    // The mark is still until the pointer arrives.
+    expect(await markAnimations(page)).toBe(0);
+    await page.locator(".headline").hover();
+    const angles = await markRotation(page, [0, 0.25, 0.5, 0.75, 0.999]);
+    expect(angles).not.toBeNull();
+    const [start, quarter, half, threeQuarters, end] = angles!;
+    expect(start).toBe(0);
+    // A few turns, ending on a whole turn so the mark rests as it started.
+    expect(end).toBeGreaterThan(719);
+    expect(Math.abs(end - Math.round(end / 360) * 360)).toBeLessThan(1);
+    // Most of the turning happens early.
+    expect(quarter).toBeGreaterThan(end / 2);
+    // Each quarter of the animation turns the mark less than the one before.
+    const turned = [
+      quarter - start,
+      half - quarter,
+      threeQuarters - half,
+      end - threeQuarters,
+    ];
+    for (let i = 1; i < turned.length; i++) {
+      expect(turned[i], `quarter ${i + 1}`).toBeLessThan(turned[i - 1]);
+    }
+    // Once the spin ends the mark stays still, even with the pointer still
+    // on the headline.
+    const rest = await page.locator(".mark").evaluate((mark) => {
+      mark.getAnimations()[0].finish();
+      return {
+        animations: mark.getAnimations().length,
+        rotate: getComputedStyle(mark).rotate,
+      };
+    });
+    expect(rest).toEqual({ animations: 0, rotate: "none" });
+  });
+
+  test("keeps the mark still when the pointer is beside the headline text", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    await page.evaluate(() => document.fonts.ready);
+    // Level with the headline, but 100px to the right of its last word.
+    const analytics = await page.locator(".headline").evaluate((headline) => {
+      const range = document.createRange();
+      range.selectNodeContents(headline);
+      const { right, top, height } = range.getBoundingClientRect();
+      return { right, middle: top + height / 2 };
+    });
+    await page.mouse.move(analytics.right + 100, analytics.middle);
+    expect(await markAnimations(page)).toBe(0);
+  });
+
+  test("keeps the mark still for readers who prefer reduced motion", async ({
+    page,
+  }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.goto("/");
+    await page.locator(".headline").hover();
+    expect(await markAnimations(page)).toBe(0);
+  });
+});
+
+// ---------------------------------------------------------------------------
 // Print
 // ---------------------------------------------------------------------------
 
