@@ -332,7 +332,7 @@ footer {
   display: inline-block;
   width: 100vw;
   margin: 0 calc(-100vw - 0.5em) 0 0.5em;
-  border-bottom: 1px dotted var(--muted);
+  border-bottom: 1px dotted color-mix(in srgb, var(--muted), var(--rule));
 }
 
 .ledger .dates {
