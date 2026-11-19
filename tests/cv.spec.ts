@@ -541,6 +541,40 @@ test("gives contact links touch targets at least 44px tall on a phone", async ({
   }
 });
 
+// Phone widths, down to the narrowest in common use.
+for (const width of [320, 390]) {
+  test(`puts the contact links on one line under the location at ${width}px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: 844 });
+    await page.goto("/");
+    await page.evaluate(() => document.fonts.ready);
+    const location = (await page
+      .locator("header .contact > span")
+      .boundingBox())!;
+    const links = await Promise.all(
+      (await page.locator("header .contact a").all()).map(
+        async (link) => (await link.boundingBox())!,
+      ),
+    );
+    // The right edge of the header's text column, inside its padding.
+    const edge = await page
+      .locator("header")
+      .evaluate(
+        (el) =>
+          el.getBoundingClientRect().right -
+          parseFloat(getComputedStyle(el).paddingRight),
+      );
+    for (const link of links) {
+      // Every link starts below the location and level with the first link.
+      expect(link.y).toBeGreaterThanOrEqual(location.y + location.height);
+      expect(link.y).toBe(links[0].y);
+      // None runs past the edge of the column.
+      expect(link.x + link.width).toBeLessThanOrEqual(edge);
+    }
+  });
+}
+
 test("labels profile links by service on screen and by address in print", async ({
   page,
 }) => {

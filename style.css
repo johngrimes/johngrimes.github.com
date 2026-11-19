@@ -446,6 +446,19 @@ footer p {
   }
 }
 
+/* On a narrow screen the location has a line to itself and the four links
+   share the next one, the gap between them closing as the screen narrows so
+   that they still fit at 320px. Print keeps the single wrapping line. */
+@media screen and (width <= 44rem) {
+  .contact {
+    column-gap: clamp(0.35rem, 20vw - 3.65rem, 1.25rem);
+  }
+
+  .contact > span {
+    flex-basis: 100%;
+  }
+}
+
 /* Print and PDF: black ink on white A4, sized in points. Declared last so it
    overrides the dark colour scheme. */
 
