@@ -276,33 +276,34 @@ test.describe("content", () => {
 // ---------------------------------------------------------------------------
 
 test.describe("typography", () => {
-  test("sets body text in self-hosted Source Serif 4 with old-style figures", async ({
-    page,
-  }) => {
+  test("sets body text in self-hosted IBM Plex Serif", async ({ page }) => {
     await page.goto("/");
     await page.evaluate(() => document.fonts.ready);
-    const body = await page
+    const family = await page
       .locator("#profile p")
       .first()
-      .evaluate((el) => {
-        const style = getComputedStyle(el);
-        return {
-          family: style.fontFamily,
-          numeric: style.fontVariantNumeric,
-        };
-      });
-    expect(body.family).toMatch(/^"Source Serif 4"/);
-    expect(body.numeric).toContain("oldstyle-nums");
-    // The faces must actually load, not silently fall back.
-    expect(
-      await page.evaluate(() => document.fonts.check('1em "Source Serif 4"')),
-    ).toBe(true);
-    expect(
-      await page.evaluate(() => document.fonts.check('1em "Source Sans 3"')),
-    ).toBe(true);
+      .evaluate((el) => getComputedStyle(el).fontFamily);
+    expect(family).toMatch(/^"IBM Plex Serif"/);
+    // Every face the page uses must load from the site, not silently fall
+    // back: regular body text, the medium name, semibold entry headings,
+    // italic roles and the sans labels.
+    const loaded = await page.evaluate(() =>
+      [...document.fonts]
+        .filter((f) => f.status === "loaded")
+        .map((f) => `${f.family.replace(/"/g, "")} ${f.weight} ${f.style}`),
+    );
+    expect(loaded).toEqual(
+      expect.arrayContaining([
+        "IBM Plex Serif 400 normal",
+        "IBM Plex Serif 500 normal",
+        "IBM Plex Serif 600 normal",
+        "IBM Plex Serif 400 italic",
+        "IBM Plex Sans 400 600 normal",
+      ]),
+    );
   });
 
-  test("sets labels such as dates in Source Sans 3 with tabular figures", async ({
+  test("sets labels such as dates in IBM Plex Sans with tabular figures", async ({
     page,
   }) => {
     await page.goto("/");
@@ -313,7 +314,7 @@ test.describe("typography", () => {
         const style = getComputedStyle(el);
         return { family: style.fontFamily, numeric: style.fontVariantNumeric };
       });
-    expect(date.family).toMatch(/^"Source Sans 3"/);
+    expect(date.family).toMatch(/^"IBM Plex Sans"/);
     expect(date.numeric).toContain("tabular-nums");
   });
 
