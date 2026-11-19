@@ -191,6 +191,8 @@ test.describe("content", () => {
     const talks = page.locator("#talks li");
     await expect(page.locator("#talks-heading")).toHaveText("Recorded talks");
     await expect(talks.locator("a")).toHaveText([
+      "Validation of SQL on FHIR via clinical study replication",
+      "Pathling: SQL on FHIR views for Apache Spark",
       "Architecting explainable AI decision support on FHIR",
       "Using FHIR terminology within data analytics",
       "A new tool for representing SNOMED CT concepts for use in model training",
@@ -204,6 +206,8 @@ test.describe("content", () => {
       .evaluateAll((links) => links.map((a) => a.getAttribute("href")));
     expect(hrefs).toEqual(
       [
+        "UppNaETsNiE",
+        "e-hFKckQITw",
         "W2ZiooBTd9Q",
         "naA7XVfeMdY",
         "w5vr3BHQ26Y",
@@ -215,6 +219,8 @@ test.describe("content", () => {
     );
     // Each talk names the event and where it was held.
     await expect(talks.locator("span:not(.dates)")).toHaveText([
+      /, Analytics on FHIR, online$/,
+      /, Analytics on FHIR, online$/,
       /, FHIR DevDays, Minneapolis$/,
       /, FHIR DevDays, Minneapolis$/,
       /, SNOMED CT Expo, Atlanta$/,
