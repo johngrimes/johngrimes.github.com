@@ -80,7 +80,7 @@ test.describe("content", () => {
         "Profile",
         "Selected work",
         "Experience",
-        "Standards and speaking",
+        "Speaking and engagement",
         "Publications",
         "Skills",
         "Education",
