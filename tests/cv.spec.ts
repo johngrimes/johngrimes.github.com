@@ -276,33 +276,34 @@ test.describe("content", () => {
 // ---------------------------------------------------------------------------
 
 test.describe("typography", () => {
-  test("sets body text in self-hosted Source Serif 4 with old-style figures", async ({
-    page,
-  }) => {
+  test("sets body text in self-hosted IBM Plex Serif", async ({ page }) => {
     await page.goto("/");
     await page.evaluate(() => document.fonts.ready);
-    const body = await page
+    const family = await page
       .locator("#profile p")
       .first()
-      .evaluate((el) => {
-        const style = getComputedStyle(el);
-        return {
-          family: style.fontFamily,
-          numeric: style.fontVariantNumeric,
-        };
-      });
-    expect(body.family).toMatch(/^"Source Serif 4"/);
-    expect(body.numeric).toContain("oldstyle-nums");
-    // The faces must actually load, not silently fall back.
-    expect(
-      await page.evaluate(() => document.fonts.check('1em "Source Serif 4"')),
-    ).toBe(true);
-    expect(
-      await page.evaluate(() => document.fonts.check('1em "Source Sans 3"')),
-    ).toBe(true);
+      .evaluate((el) => getComputedStyle(el).fontFamily);
+    expect(family).toMatch(/^"IBM Plex Serif"/);
+    // Every face the page uses must load from the site, not silently fall
+    // back: regular body text, the medium name, semibold entry headings,
+    // italic roles and the sans labels.
+    const loaded = await page.evaluate(() =>
+      [...document.fonts]
+        .filter((f) => f.status === "loaded")
+        .map((f) => `${f.family.replace(/"/g, "")} ${f.weight} ${f.style}`),
+    );
+    expect(loaded).toEqual(
+      expect.arrayContaining([
+        "IBM Plex Serif 400 normal",
+        "IBM Plex Serif 500 normal",
+        "IBM Plex Serif 600 normal",
+        "IBM Plex Serif 400 italic",
+        "IBM Plex Sans 400 600 normal",
+      ]),
+    );
   });
 
-  test("sets labels such as dates in Source Sans 3 with tabular figures", async ({
+  test("sets labels such as dates in IBM Plex Sans with tabular figures", async ({
     page,
   }) => {
     await page.goto("/");
@@ -313,7 +314,7 @@ test.describe("typography", () => {
         const style = getComputedStyle(el);
         return { family: style.fontFamily, numeric: style.fontVariantNumeric };
       });
-    expect(date.family).toMatch(/^"Source Sans 3"/);
+    expect(date.family).toMatch(/^"IBM Plex Sans"/);
     expect(date.numeric).toContain("tabular-nums");
   });
 
@@ -343,6 +344,110 @@ test.describe("typography", () => {
     const dark = await colours();
     expect(dark[0]).not.toEqual(light[0]);
     expect(dark[1]).not.toEqual(light[1]);
+  });
+
+  test("uses three text sizes on screen: the name, body text and labels", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    await page.evaluate(() => document.fonts.ready);
+    const sizes = await page.evaluate(() => {
+      const found = new Set<string>();
+      const walker = document.createTreeWalker(
+        document.body,
+        NodeFilter.SHOW_TEXT,
+      );
+      for (let n = walker.nextNode(); n; n = walker.nextNode()) {
+        const el = n.parentElement!;
+        if (n.textContent!.trim() && el.checkVisibility()) {
+          found.add(getComputedStyle(el).fontSize);
+        }
+      }
+      return [...found];
+    });
+    expect(sizes).toHaveLength(3);
+  });
+
+  test("sets the profile at the same size as other body text", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    const size = (selector: string) =>
+      page
+        .locator(selector)
+        .first()
+        .evaluate((el) => getComputedStyle(el).fontSize);
+    expect(await size("#profile p")).toBe(
+      await size("#selected-work .entry > p:not(.role)"),
+    );
+  });
+
+  test("sets section labels in full capitals at the label size", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    // Plex has no small capitals, so the browser would shrink and thin them.
+    const style = (selector: string) =>
+      page
+        .locator(selector)
+        .first()
+        .evaluate((el) => {
+          const s = getComputedStyle(el);
+          return {
+            size: s.fontSize,
+            caps: s.fontVariantCaps,
+            transform: s.textTransform,
+          };
+        });
+    const label = await style("main h2");
+    const date = await style("#experience .dates");
+    expect(label.caps).toBe("normal");
+    expect(label.transform).toBe("uppercase");
+    expect(label.size).toBe(date.size);
+  });
+
+  test("aligns side-by-side text on a common baseline", async ({ page }) => {
+    await page.goto("/");
+    await page.evaluate(() => document.fonts.ready);
+    const offsets = await page.evaluate(() => {
+      // An empty inline-block sits on the baseline of the line it is placed
+      // in, so its bottom edge gives the baseline of the first line of text.
+      const baseline = (el: Element) => {
+        const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+        let text = walker.nextNode();
+        while (text && !text.textContent!.trim()) text = walker.nextNode();
+        const mark = document.createElement("span");
+        mark.style.display = "inline-block";
+        text!.parentNode!.insertBefore(mark, text);
+        const y = mark.getBoundingClientRect().bottom;
+        mark.remove();
+        return y;
+      };
+      const pairs: [string, Element, Element][] = [];
+      for (const s of document.querySelectorAll("main > section")) {
+        pairs.push([s.id, s.querySelector("h2")!, s.querySelector(".body")!]);
+      }
+      for (const h of document.querySelectorAll(".entry-head")) {
+        pairs.push([
+          h.textContent!.trim().slice(0, 20),
+          h.querySelector("h3")!,
+          h.querySelector(".dates")!,
+        ]);
+      }
+      for (const d of document.querySelectorAll(".skills div")) {
+        pairs.push([
+          d.querySelector("dt")!.textContent!,
+          d.querySelector("dt")!,
+          d.querySelector("dd")!,
+        ]);
+      }
+      return pairs.map(
+        ([name, a, b]) => [name, Math.abs(baseline(a) - baseline(b))] as const,
+      );
+    });
+    for (const [name, offset] of offsets) {
+      expect(offset, name).toBeLessThan(0.5);
+    }
   });
 });
 
