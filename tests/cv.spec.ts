@@ -171,7 +171,7 @@ test.describe("content", () => {
   test("lists the health data standards and specifications", async ({
     page,
   }) => {
-    // Standards sit between the papers and the open source software.
+    // Standards come first, ahead of the papers and the open source software.
     const heading = page.locator("#standards-specs-heading");
     await expect(heading).toHaveText(
       "Health data standards and specifications",
@@ -180,8 +180,8 @@ test.describe("content", () => {
       ["SQL on FHIR", "Parquet on FHIR"],
     );
     await expect(page.locator("#publications h3")).toHaveText([
-      "Peer-reviewed publications",
       "Health data standards and specifications",
+      "Peer-reviewed publications",
       "Open source software",
     ]);
   });
