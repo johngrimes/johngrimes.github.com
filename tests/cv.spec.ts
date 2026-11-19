@@ -6,6 +6,9 @@
  * @author John Grimes
  */
 
+import { join } from "node:path";
+import { pathToFileURL } from "node:url";
+
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
 import { getDocument } from "pdfjs-dist/legacy/build/pdf.mjs";
@@ -745,6 +748,15 @@ test.describe("motion", () => {
     await page.goto("/");
     await page.locator(".mark").hover();
     expect(await markSpinning(page)).toBe(false);
+  });
+
+  test("spins the mark when the page is opened from disk, without a server", async ({
+    page,
+  }) => {
+    // Browsers refuse to load some kinds of script from file: addresses.
+    await page.goto(pathToFileURL(join(__dirname, "..", "index.html")).href);
+    await page.locator(".mark").hover();
+    expect(await markSpinning(page)).toBe(true);
   });
 });
 
