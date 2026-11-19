@@ -141,7 +141,7 @@ test.describe("content", () => {
     await expect(page.locator("body")).not.toContainText(/recommendation/i);
   });
 
-  test("lists exactly the first-author papers and software", async ({
+  test("lists exactly the first-author papers, specifications and software", async ({
     page,
   }) => {
     const dois = await page
@@ -156,6 +156,8 @@ test.describe("content", () => {
         // Papers
         "10.1038/s41746-025-01708-w",
         "10.1186/s13326-022-00277-1",
+        // Specifications
+        "10.5281/zenodo.14166591",
         // Software
         "10.25919/ezpq-qv35",
         "10.25919/vnzg-tn91",
@@ -164,6 +166,24 @@ test.describe("content", () => {
         "10.25919/03y2-d383",
       ].sort(),
     );
+  });
+
+  test("lists the health data standards and specifications", async ({
+    page,
+  }) => {
+    // Standards sit between the papers and the open source software.
+    const heading = page.locator("#standards-specs-heading");
+    await expect(heading).toHaveText(
+      "Health data standards and specifications",
+    );
+    await expect(page.locator("#standards-specs-heading + ul cite")).toHaveText(
+      ["SQL on FHIR", "Parquet on FHIR"],
+    );
+    await expect(page.locator("#publications h3")).toHaveText([
+      "Peer-reviewed publications",
+      "Health data standards and specifications",
+      "Open source software",
+    ]);
   });
 
   test("lists the selected open source software", async ({ page }) => {
