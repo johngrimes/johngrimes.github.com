@@ -295,7 +295,7 @@ footer {
   color: var(--accent);
 }
 
-/* Short supplementary lists with dot leaders running to the dates. */
+/* Short supplementary lists with dates set flush right. */
 
 .minor {
   margin-top: 1.6rem;
@@ -314,19 +314,12 @@ footer {
 .ledger li {
   display: flex;
   align-items: baseline;
+  gap: 2rem;
   margin-bottom: 0.25em;
 }
 
-.ledger li::after {
-  content: "";
-  flex: 1 0 1.5rem;
-  order: 1;
-  margin: 0 0.5em;
-  border-bottom: 1px dotted var(--muted);
-}
-
 .ledger .dates {
-  order: 2;
+  margin-left: auto;
 }
 
 /* Publications: hanging indents, titles in italic. */
