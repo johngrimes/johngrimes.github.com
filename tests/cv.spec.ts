@@ -197,7 +197,7 @@ test.describe("content", () => {
       "Developing new user interfaces for Expression Constraint Language queries",
       "Pathling: bringing the power of SNOMED CT to analytics app development",
       "Terminology analytics",
-      "Australia’s FHIR based NCTS",
+      "Australia’s FHIR based National Clinical Terminology Service",
     ]);
     const hrefs = await talks
       .locator("a")
