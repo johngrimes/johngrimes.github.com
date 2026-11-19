@@ -186,6 +186,35 @@ test.describe("content", () => {
     ]);
   });
 
+  test("links to recorded conference talks", async ({ page }) => {
+    // Talks are listed newest first, each linking to its YouTube recording.
+    const talks = page.locator("#talks li");
+    await expect(page.locator("#talks-heading")).toHaveText("Recorded talks");
+    await expect(talks.locator("a")).toHaveText([
+      "Architecting explainable AI decision support on FHIR",
+      "Using FHIR terminology within data analytics",
+      "A new tool for representing SNOMED CT concepts for use in model training",
+      "Developing new user interfaces for Expression Constraint Language queries",
+      "Pathling: bringing the power of SNOMED CT to analytics app development",
+      "Terminology analytics",
+      "Australia’s FHIR based NCTS",
+    ]);
+    const hrefs = await talks
+      .locator("a")
+      .evaluateAll((links) => links.map((a) => a.getAttribute("href")));
+    expect(hrefs).toEqual(
+      [
+        "W2ZiooBTd9Q",
+        "naA7XVfeMdY",
+        "w5vr3BHQ26Y",
+        "qW3jVsYjMq8",
+        "S5nlVWgI3u4",
+        "wmnsUEX-K9Q",
+        "wFAYye7hM-c",
+      ].map((id) => `https://www.youtube.com/watch?v=${id}`),
+    );
+  });
+
   test("lists the selected open source software", async ({ page }) => {
     // The heading names the list as open source, and the projects appear in
     // the order chosen for the CV.
