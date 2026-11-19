@@ -74,6 +74,22 @@ test.describe("content", () => {
     await expect(page.locator("html")).toHaveAttribute("lang", "en-AU");
   });
 
+  test("draws the headline plus as an accent-coloured square mark", async ({
+    page,
+  }) => {
+    const headline = page.locator("header .headline");
+    // The mark replaces the typed plus but still reads as "+" to assistive
+    // technology.
+    const mark = headline.getByRole("img", { name: "+" });
+    await expect(mark).toBeVisible();
+    // The square takes the headline's accent colour in either scheme.
+    const [markColour, headlineColour] = await Promise.all([
+      mark.evaluate((el) => getComputedStyle(el).color),
+      headline.evaluate((el) => getComputedStyle(el).color),
+    ]);
+    expect(markColour).toBe(headlineColour);
+  });
+
   test("orders sections work-first", async ({ page }) => {
     expect(await page.locator("main > section > h2").allTextContents()).toEqual(
       [

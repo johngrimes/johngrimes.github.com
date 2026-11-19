@@ -170,6 +170,14 @@ h1 {
   letter-spacing: 0.08em;
 }
 
+/* Rounded square with a cut-out plus, standing in for "+" in the headline. */
+.mark {
+  width: 1em;
+  height: 1em;
+  margin-inline: 0.1em;
+  vertical-align: -0.15em;
+}
+
 .contact {
   display: flex;
   flex-wrap: wrap;
