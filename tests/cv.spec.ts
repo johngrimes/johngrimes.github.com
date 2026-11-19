@@ -166,6 +166,29 @@ test.describe("content", () => {
     );
   });
 
+  test("lists the selected open source software", async ({ page }) => {
+    // The heading names the list as open source, and the projects appear in
+    // the order chosen for the CV.
+    const list = page.locator("#open-source-heading + ul");
+    await expect(page.locator("#open-source-heading")).toHaveText(
+      "Open source software",
+    );
+    await expect(list.locator("cite")).toHaveText([
+      "Pathling",
+      "MCP FHIR Tools",
+      "FHIR Terminology Encoder",
+      "SQL on FHIR views for Microsoft SQL Server",
+      "Signet",
+      "ECL Builder",
+      "FHIR Auth Java",
+      "Mojoflow",
+      "MCP JS Debugger",
+      "JiveDrive",
+      "Rangler",
+      "Prana Bindu",
+    ]);
+  });
+
   test("condenses pre-2010 roles into one-line entries", async ({ page }) => {
     const earlier = page.locator("#earlier li");
     await expect(earlier).toHaveCount(4);
@@ -337,10 +360,10 @@ test("labels profile links by service on screen and by address in print", async 
 // ---------------------------------------------------------------------------
 
 test.describe("print", () => {
-  test("prints to no more than two A4 pages", async ({ page }) => {
+  test("prints to no more than three A4 pages", async ({ page }) => {
     await page.goto("/");
     const pages = await printPages(page);
-    expect(pages.length).toBeLessThanOrEqual(2);
+    expect(pages.length).toBeLessThanOrEqual(3);
     for (const p of pages) {
       expect(p.width).toBeCloseTo(A4.width, 0);
       expect(p.height).toBeCloseTo(A4.height, 0);

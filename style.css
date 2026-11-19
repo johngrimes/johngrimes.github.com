@@ -508,11 +508,12 @@ footer p {
     min-height: 0;
   }
 
-  /* Keep each entry whole, so no page starts with a stray bullet. */
+  /* Keep each entry and citation list whole, so no page starts with a stray
+     bullet. */
   .entry,
   .minor,
   .skills div,
-  .citations li {
+  .citations {
     break-inside: avoid;
   }
 
