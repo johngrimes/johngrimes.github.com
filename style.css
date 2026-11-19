@@ -1,5 +1,5 @@
 /*
- * CV stylesheet: warm editorial typesetting for screen, dark mode and A4 print.
+ * CV stylesheet: editorial typesetting for screen, dark mode and A4 print.
  *
  * Author: John Grimes
  */
@@ -28,14 +28,14 @@
   font-display: swap;
 }
 
-/* Colour: warm paper, near-black ink and a single rubric red for labels and
-   link underlines, after the red used for headings in manuscripts. */
+/* Colour: white paper, near-black ink and neutral greys, with a single ochre
+   accent for labels and link underlines. */
 :root {
-  --paper: #fbf8f3;
-  --ink: #1d1b18;
-  --muted: #5f5850;
-  --rule: #ddd5c8;
-  --accent: #9b2f1c;
+  --paper: #fff;
+  --ink: #111;
+  --muted: #5c5c5c;
+  --rule: #dcdcdc;
+  --accent: #8a5a00;
   --serif: "Source Serif 4", georgia, serif;
   --sans: "Source Sans 3", "Helvetica Neue", arial, sans-serif;
   --label-width: 9rem;
@@ -44,11 +44,11 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --paper: #171513;
-    --ink: #ebe6dd;
-    --muted: #a89f93;
-    --rule: #3a352f;
-    --accent: #f0907a;
+    --paper: #121212;
+    --ink: #e8e8e8;
+    --muted: #a0a0a0;
+    --rule: #333;
+    --accent: #e0b057;
   }
 }
 
@@ -424,9 +424,9 @@ footer p {
   :root {
     --paper: #fff;
     --ink: #000;
-    --muted: #4a4540;
-    --rule: #c8c0b4;
-    --accent: #8a2a19;
+    --muted: #4a4a4a;
+    --rule: #c8c8c8;
+    --accent: #8a5a00;
     --label-width: 6.5rem;
     --gutter: 1.25rem;
   }
