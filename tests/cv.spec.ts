@@ -11,7 +11,8 @@ import { pathToFileURL } from "node:url";
 
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
-import { getDocument } from "pdfjs-dist/legacy/build/pdf.mjs";
+
+import { flatten, readPdf, renderPdf, type PdfPage } from "./pdf";
 
 // A4 in PostScript points, as reported by PDF page boxes.
 const A4 = { width: 595.28, height: 841.89 };
@@ -20,39 +21,58 @@ const A4 = { width: 595.28, height: 841.89 };
 const TEN_POINT_PX = 40 / 3;
 
 /**
- * Prints the page to PDF as the browser would and returns each page's size
- * and text.
+ * Prints the page to PDF as the browser would and reads each page back.
  *
  * @param page - The Playwright page, already loaded.
- * @returns One entry per PDF page, with width and height in points.
+ * @returns One entry per PDF page: its size in points, its text as a reader
+ *   sees it, and its text as the file holds it.
  */
 const printPages = async (page: Page) => {
-  await page.evaluate(() => document.fonts.ready);
-  // preferCSSPageSize makes the stylesheet's @page rule decide the size,
-  // as it does when printing from the browser.
-  const data = await page.pdf({
-    preferCSSPageSize: true,
-    printBackground: true,
-  });
-  const pdf = await getDocument({ data: new Uint8Array(data) }).promise;
-  const pages = [];
-  for (let n = 1; n <= pdf.numPages; n++) {
-    const p = await pdf.getPage(n);
-    const { width, height } = p.getViewport({ scale: 1 });
-    const { items } = await p.getTextContent();
-    // Text arrives in paint order, so sort it top to bottom, then left to
-    // right, to get the order a reader sees. PDF y runs upwards.
-    const text = items
-      .flatMap((item) =>
-        "str" in item && item.str.trim()
-          ? [{ str: item.str, x: item.transform[4], y: item.transform[5] }]
-          : [],
-      )
+  const { pages } = await readPdf(await renderPdf(page));
+  return pages.map((p) => ({
+    ...p,
+    // The file holds text in the order it was painted. Sorted top to bottom,
+    // then left to right, it is in the order a reader sees. PDF y runs
+    // upwards.
+    text: [...p.items]
       .sort((a, b) => Math.round(b.y) - Math.round(a.y) || a.x - b.x)
-      .map((item) => item.str);
-    pages.push({ width, height, text: text.join(" ") });
+      .map((item) => item.str)
+      .join(" "),
+  }));
+};
+
+/**
+ * Finds the lines that a passage of text is set on in a printed page.
+ *
+ * @param pages - The printed pages.
+ * @param passage - The text to find, as the page gives it.
+ * @returns The baseline of each line of the passage, in points from the
+ *   bottom of the page, from the first line to the last; or null if no one
+ *   page holds the whole passage.
+ * @example
+ * // The distance between the first two lines of the profile.
+ * const [first, second] = baselines(pages, profile)!;
+ * const leading = first - second;
+ */
+const baselines = (pages: PdfPage[], passage: string) => {
+  const wanted = flatten(passage);
+  for (const p of pages) {
+    const pieces = p.items.map((item) => flatten(item.str));
+    const start = pieces.join("").indexOf(wanted);
+    if (start < 0) continue;
+    const lines: number[] = [];
+    let offset = 0;
+    p.items.forEach((item, i) => {
+      const end = offset + pieces[i].length;
+      const within = end > start && offset < start + wanted.length;
+      if (within && !lines.some((y) => Math.abs(y - item.y) < 0.01)) {
+        lines.push(item.y);
+      }
+      offset = end;
+    });
+    return lines;
   }
-  return pages;
+  return null;
 };
 
 // ---------------------------------------------------------------------------
@@ -795,6 +815,68 @@ test.describe("print", () => {
         `page starts: ${p.text.slice(0, 60)}`,
       ).toBe(true);
     }
+  });
+
+  test("aligns the text of every section to one left edge", async ({
+    page,
+  }) => {
+    await page.emulateMedia({ media: "print" });
+    await page.goto("/");
+    await page.evaluate(() => document.fonts.ready);
+    // A label wider than its column pushes the text of its section to the
+    // right of the others.
+    const edges = await page
+      .locator("main > section > .body")
+      .evaluateAll((bodies) =>
+        bodies.map((body) => body.getBoundingClientRect().left),
+      );
+    for (const edge of edges) expect(edge).toBeCloseTo(edges[0], 1);
+  });
+
+  test("spaces the lines of every paragraph evenly", async ({ page }) => {
+    await page.emulateMedia({ media: "print" });
+    await page.goto("/");
+    const paragraphs = await page.locator("main p").allInnerTexts();
+    const pages = await printPages(page);
+    for (const paragraph of paragraphs) {
+      const name = paragraph.slice(0, 40);
+      const lines = baselines(pages, paragraph);
+      expect(lines, `${name} is on one page`).not.toBeNull();
+      // The browser moves each printed line to a whole pixel, so a line
+      // height that is not a whole number of pixels gives an uneven column.
+      const steps = lines!.slice(1).map((y, i) => lines![i] - y);
+      for (const step of steps) expect(step, name).toBeCloseTo(steps[0], 2);
+    }
+  });
+
+  test("keeps each section but Experience whole on one page", async ({
+    page,
+  }) => {
+    await page.emulateMedia({ media: "print" });
+    await page.goto("/");
+    // Experience is longer than a page. A section that fits on a page is not
+    // started at the foot of the page before.
+    const sections = await page
+      .locator("main > section:not(#experience)")
+      .allInnerTexts();
+    const pages = await printPages(page);
+    for (const section of sections) {
+      expect(baselines(pages, section), section.slice(0, 40)).not.toBeNull();
+    }
+  });
+
+  test("signs and numbers every page at its foot", async ({ page }) => {
+    await page.goto("/");
+    const pages = await printPages(page);
+    pages.forEach((p, n) => {
+      // Loose pages can be put back in order, and back with their owner.
+      expect(
+        flatten(p.text).endsWith(
+          flatten(`John Grimes · ${n + 1} / ${pages.length}`),
+        ),
+        `page ${n + 1} ends: ${p.text.slice(-40)}`,
+      ).toBe(true);
+    });
   });
 
   test("sets printed body text at no less than 10pt", async ({ page }) => {

@@ -307,16 +307,18 @@ footer {
 }
 
 .entry li {
-  position: relative;
   margin-bottom: 0.25em;
   padding-left: 1.1em;
 }
 
-/* Hanging en dash markers in the accent colour. */
+/* Hanging en dash markers in the accent colour. Each is lifted out of its
+   line where the line starts, then pulled back into the padding. The list
+   item itself is not positioned, which keeps its text in reading order in
+   the PDF. */
 .entry li::before {
   content: "–";
   position: absolute;
-  left: 0;
+  margin-left: -1.1em;
   color: var(--accent);
 }
 
@@ -444,12 +446,20 @@ footer p {
   }
 }
 
-/* Print: black ink on white A4, sized in points. Declared last so it
+/* Print and PDF: black ink on white A4, sized in points. Declared last so it
    overrides the dark colour scheme. */
 
 @page {
   size: a4;
-  margin: 10mm 14mm;
+  margin: 13mm 14mm 17mm;
+
+  /* Each page carries the name and its number in the foot margin. */
+  @bottom-right {
+    content: "John Grimes · " counter(page) " / " counter(pages);
+    color: var(--muted);
+    font-family: var(--sans);
+    font-size: 8pt;
+  }
 }
 
 @media print {
@@ -459,7 +469,7 @@ footer p {
     --muted: #4a4a4a;
     --rule: #c8c8c8;
     --accent: #8a5a00;
-    --label-width: 6.5rem;
+    --label-width: 8rem;
     --gutter: 1.25rem;
     --small: 0.95rem;
   }
@@ -469,11 +479,39 @@ footer p {
   }
 
   /* Body text is set in points so it stays at a readable 10pt while labels
-     keep the smaller rem scale. */
+     keep the smaller rem scale.
+
+     Line heights and vertical spacing are in whole pixels (1px is 0.75pt).
+     The browser moves each printed line to a whole pixel, so spacing with a
+     fraction of a pixel in it makes gaps that should be equal differ by
+     one. */
   body {
     font-size: 10pt;
-    line-height: 1.25;
+    line-height: 17px;
     -webkit-font-smoothing: auto;
+  }
+
+  h3 {
+    line-height: inherit;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  .contact a {
+    min-height: 0;
+  }
+
+  /* Small text has a line height short enough that it never makes a line it
+     shares with body text taller. */
+  h2,
+  .headline,
+  .contact,
+  .dates,
+  .citations a,
+  dt {
+    line-height: 14px;
   }
 
   .screen {
@@ -486,23 +524,24 @@ footer p {
 
   p,
   .entry ul {
-    margin-bottom: 0.4em;
+    margin-bottom: 5px;
   }
 
   .entry li {
-    margin-bottom: 0.1em;
+    margin-bottom: 2px;
   }
 
   .role {
-    margin-bottom: 0.3rem;
+    margin: 0 0 3px;
   }
 
+  .ledger li,
   .citations li {
-    margin-bottom: 0.25em;
+    margin-bottom: 4px;
   }
 
   .skills div {
-    margin-bottom: 0.15em;
+    margin-bottom: 2px;
   }
 
   header,
@@ -512,48 +551,54 @@ footer p {
   }
 
   header {
-    padding-block: 0 0.8rem;
+    padding-block: 0 10px;
   }
 
   h1 {
-    font-size: 2.75rem;
+    font-size: 24pt;
   }
 
   .headline {
-    margin: 0.35rem 0 0.7rem;
+    margin: 5px 0 9px;
   }
 
   main > section {
-    padding-block: 0.5rem;
-  }
-
-  a {
-    text-decoration: none;
-  }
-
-  .contact a {
-    min-height: 0;
+    padding-block: 6px;
   }
 
   /* Keep each entry and citation list whole, so no page starts with a stray
-     bullet. */
+     bullet. Sections are kept whole too, so none starts at the foot of a
+     page, except Experience, which is longer than a page. */
   .entry,
   .minor,
   .skills div,
-  .citations {
+  .citations,
+  main > section:not(#experience) {
     break-inside: avoid;
-  }
-
-  .entry + .entry,
-  .minor,
-  .note {
-    margin-top: 0.55rem;
   }
 
   h3,
   .entry-head,
   .note {
     break-after: avoid;
+  }
+
+  .entry + .entry,
+  .minor,
+  .note {
+    margin-top: 6px;
+  }
+
+  .minor h3 {
+    margin-bottom: 4px;
+  }
+
+  .body > h3 + * {
+    margin-top: 4px;
+  }
+
+  .body > .citations + h3 {
+    margin-top: 12px;
   }
 
   /* The colophon describes the web page, so it is left off paper. */

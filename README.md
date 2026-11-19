@@ -6,14 +6,15 @@ The page is hand-written HTML, CSS and one small script, with no build step.
 GitHub Pages serves the repository root from `master`; `.nojekyll` stops Pages
 from running Jekyll over it. The old `/cv` address redirects to `/`.
 
-| File            | Purpose                                    |
-| --------------- | ------------------------------------------ |
-| `index.html`    | The CV                                     |
-| `style.css`     | Screen, dark mode and A4 print styles      |
-| `spin.js`       | Spins the headline mark on hover           |
-| `fonts/`        | Subset WOFF2 fonts and their licences      |
-| `cv/index.html` | Redirect from the old CV address           |
-| `tests/`        | Browser tests and the local preview server |
+| File                 | Purpose                                             |
+| -------------------- | --------------------------------------------------- |
+| `index.html`         | The CV                                              |
+| `style.css`          | Screen, dark mode and A4 print styles               |
+| `spin.js`            | Spins the headline mark on hover                    |
+| `john-grimes-cv.pdf` | The CV as a PDF, built from `index.html`            |
+| `fonts/`             | Subset WOFF2 fonts and their licences               |
+| `cv/index.html`      | Redirect from the old CV address                    |
+| `tests/`             | Browser tests, the PDF build and the preview server |
 
 ## Working on it
 
@@ -25,15 +26,33 @@ bun run serve        # preview at http://localhost:4173/
 bun run lint         # Prettier, html-validate and stylelint
 bunx playwright install chromium
 bun run test         # browser tests
+bun run pdf          # rebuild john-grimes-cv.pdf
 ```
 
 The tests check the agreed content decisions, accessibility (axe) in light and
 dark modes, layout at 320px, that the first selected-work outcome and 44px
-contact links appear on a 390px phone screen, and the print output: at most two
-A4 pages, 10pt body text, and every page after the first starting at a heading.
+contact links appear on a 390px phone screen, and the print output: at most
+three A4 pages, 10pt body text, evenly spaced lines, a name and page number at
+the foot of every page, and every page after the first starting at a heading.
 Print entries are never split across pages, so an entry that does not fit at
-the foot of a page moves whole to the next. Content that pushes the layout onto
-a third page fails the build, so trim before adding.
+the foot of a page moves whole to the next. Sections other than Experience are
+kept whole in the same way. Content that pushes the layout onto a fourth page
+fails the build, so trim before adding.
+
+## PDF
+
+`john-grimes-cv.pdf` is the page as Chromium prints it, using the print styles
+in `style.css`, so the page is the only source for both. `bun run pdf` rebuilds
+it. The author and subject in its document properties come from the `author`
+and `description` meta elements of the page.
+
+The tests compare the PDF with a fresh print of the page, and fail if the text
+or its position differs. For example, after changing a job title in
+`index.html` or a margin in `style.css`, `bun run test` fails with
+"john-grimes-cv.pdf is out of date" until `bun run pdf` has been run. The
+tests also check that the PDF holds its text in reading order, embeds its
+fonts, is tagged for assistive technology and has a working link for each link
+on the page.
 
 ## Fonts
 
