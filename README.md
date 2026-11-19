@@ -40,8 +40,9 @@ a third page fails the build, so trim before adding.
 [IBM Plex Serif](https://github.com/IBM/plex) and IBM Plex Sans, both under the
 SIL Open Font License (see `fonts/OFL-*.txt`). The WOFF2 files are subset to
 Latin and general punctuation, with all OpenType features kept. The serif comes
-as static regular, medium, semibold and italic files; the sans is variable,
-with the weight axis limited to 400-600 and the width axis fixed at normal. To
+as static regular, medium, semibold and italic files, and the sans as static
+regular and semibold files. The sans is not a variable font because Chromium
+embeds a variable font in a PDF as Type 3 glyph shapes, not as a font. To
 regenerate them from the TTFs in [google/fonts](https://github.com/google/fonts):
 
 ```sh
@@ -50,8 +51,10 @@ R='uv run --with fonttools --with brotli'
 for f in Regular Medium SemiBold Italic; do
   $R pyftsubset IBMPlexSerif-$f.ttf --unicodes="$U" --layout-features='*' --flavor=woff2 --output-file=fonts/IBMPlexSerif-$f.woff2
 done
-$R fonttools varLib.instancer 'IBMPlexSans[wdth,wght].ttf' wght=400:600 wdth=100 -o ss.ttf
-$R pyftsubset ss.ttf --unicodes="$U" --layout-features='*' --flavor=woff2 --output-file=fonts/IBMPlexSans.woff2
+for w in Regular:400 SemiBold:600; do
+  $R fonttools varLib.instancer 'IBMPlexSans[wdth,wght].ttf' wght=${w#*:} wdth=100 --update-name-table -o ss.ttf
+  $R pyftsubset ss.ttf --unicodes="$U" --layout-features='*' --flavor=woff2 --output-file=fonts/IBMPlexSans-${w%:*}.woff2
+done
 ```
 
 ## Author

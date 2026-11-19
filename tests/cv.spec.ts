@@ -317,7 +317,8 @@ test.describe("typography", () => {
         "IBM Plex Serif 500 normal",
         "IBM Plex Serif 600 normal",
         "IBM Plex Serif 400 italic",
-        "IBM Plex Sans 400 600 normal",
+        "IBM Plex Sans 400 normal",
+        "IBM Plex Sans 600 normal",
       ]),
     );
   });
