@@ -86,7 +86,6 @@ footer {
 p,
 li,
 dd {
-  hyphens: auto;
   text-wrap: pretty;
 }
 
@@ -108,7 +107,6 @@ a {
   text-underline-offset: 0.18em;
   text-decoration-skip-ink: auto;
   overflow-wrap: anywhere;
-  hyphens: manual;
   transition:
     color 0.15s,
     text-decoration-color 0.15s;
@@ -213,7 +211,6 @@ h2 {
 .lede {
   font-size: 1.1em;
   line-height: 1.5;
-  hyphens: manual;
 }
 
 /* Entries */
