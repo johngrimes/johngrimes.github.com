@@ -1,9 +1,9 @@
 /**
  * Spins the headline mark about its vertical axis, like a coin on its edge,
- * when the pointer enters the headline. The spin starts at full speed and
- * slows to rest face on, whether or not the pointer stays. If the pointer
- * comes back before the mark has stopped, the spin starts again at full speed
- * from wherever the mark has reached.
+ * when the pointer moves onto it. The spin starts at full speed and slows to
+ * rest face on, whether or not the pointer stays. If the pointer comes back
+ * before the mark has stopped, the spin starts again at full speed from
+ * wherever the mark has reached.
  *
  * @author John Grimes
  */
@@ -18,8 +18,10 @@ const EASING = "cubic-bezier(0.33, 1, 0.68, 1)";
 // turning mark grows and the far edge shrinks.
 const PERSPECTIVE = "4em";
 
-const headline = document.querySelector(".headline");
-const mark = headline.querySelector(".mark");
+// The mark's box, which stays put and takes the pointer, and the drawing
+// inside it, which turns.
+const mark = document.querySelector(".mark");
+const drawing = mark.querySelector("svg");
 const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
 
 // The latest spin, and the angles in degrees that it runs between.
@@ -27,7 +29,7 @@ let spin = null;
 let from = 0;
 let to = 0;
 
-headline.addEventListener("mouseenter", () => {
+mark.addEventListener("mouseenter", () => {
   if (reducedMotion.matches) return;
   // A spin that has finished reports no progress, and leaves the mark at rest.
   const progress = spin?.effect.getComputedTiming().progress ?? null;
@@ -37,7 +39,7 @@ headline.addEventListener("mouseenter", () => {
   // Stop face on, at the first half turn that is at least a full spin away.
   to = Math.ceil(from / 180) * 180 + TURNS * 360;
   spin?.cancel();
-  spin = mark.animate(
+  spin = drawing.animate(
     {
       transform: [from, to].map(
         (angle) => `perspective(${PERSPECTIVE}) rotateY(${angle}deg)`,

@@ -561,7 +561,7 @@ test("labels profile links by service on screen and by address in print", async 
  * const { angles } = (await markSpin(page, [0, 0.5]))!;
  */
 const markSpin = async (page: Page, fractions: number[]) =>
-  page.locator(".mark").evaluate((mark, fractions) => {
+  page.locator(".mark svg").evaluate((mark, fractions) => {
     const [spin] = mark.getAnimations();
     if (!spin) return null;
     spin.pause();
@@ -615,19 +615,19 @@ const fromHalfTurn = (angle: number) =>
  */
 const markSpinning = async (page: Page) =>
   page
-    .locator(".mark")
+    .locator(".mark svg")
     .evaluate((mark) =>
       mark.getAnimations().some((spin) => spin.playState === "running"),
     );
 
 test.describe("motion", () => {
-  test("spins the mark about its vertical axis, fast then slowing to rest, when the headline is hovered", async ({
+  test("spins the mark about its vertical axis, fast then slowing to rest, when the pointer moves onto it", async ({
     page,
   }) => {
     await page.goto("/");
     // The mark is still until the pointer arrives.
     expect(await markSpinning(page)).toBe(false);
-    await page.locator(".headline").hover();
+    await page.locator(".mark").hover();
     // Two hundred readings, so that the fastest part of the spin moves much
     // less than half a turn between one reading and the next.
     const spin = await markSpin(
@@ -658,8 +658,8 @@ test.describe("motion", () => {
       expect(quarters[i], `quarter ${i + 1}`).toBeLessThan(quarters[i - 1]);
     }
     // Once the spin ends the mark stays still, even with the pointer still
-    // on the headline.
-    const transform = await page.locator(".mark").evaluate((mark) => {
+    // on it.
+    const transform = await page.locator(".mark svg").evaluate((mark) => {
       mark.getAnimations()[0].finish();
       return getComputedStyle(mark).transform;
     });
@@ -667,11 +667,11 @@ test.describe("motion", () => {
     expect(await markSpinning(page)).toBe(false);
   });
 
-  test("keeps the mark spinning after the pointer leaves the headline", async ({
+  test("keeps the mark spinning after the pointer leaves it", async ({
     page,
   }) => {
     await page.goto("/");
-    await page.locator(".headline").hover();
+    await page.locator(".mark").hover();
     await page.mouse.move(0, 0);
     expect(await markSpinning(page)).toBe(true);
   });
@@ -694,14 +694,14 @@ test.describe("motion", () => {
       };
     };
     await page.goto("/");
-    await page.locator(".headline").hover();
+    await page.locator(".mark").hover();
     const full = await reading(0);
     // Well into the spin the mark has slowed. The spin stays paused here, so
     // the turn it has reached when the pointer comes back is known.
     const slowed = await reading(0.6);
     expect(slowed.speed).toBeLessThan(full.speed / 2);
     await page.mouse.move(0, 0);
-    await page.locator(".headline").hover();
+    await page.locator(".mark").hover();
     const restarted = await reading(0);
     // The mark carries on from where it was, and as fast as a fresh spin.
     expect(fromHalfTurn(restarted.from - slowed.to)).toBeLessThan(1);
@@ -711,19 +711,30 @@ test.describe("motion", () => {
     expect(fromHalfTurn(angles[0])).toBeLessThan(1);
   });
 
-  test("keeps the mark still when the pointer is beside the headline text", async ({
+  test("responds across the whole of the mark's place while the mark is edge on", async ({
     page,
   }) => {
     await page.goto("/");
-    await page.evaluate(() => document.fonts.ready);
-    // Level with the headline, but 100px to the right of its last word.
-    const analytics = await page.locator(".headline").evaluate((headline) => {
-      const range = document.createRange();
-      range.selectNodeContents(headline);
-      const { right, top, height } = range.getBoundingClientRect();
-      return { right, middle: top + height / 2 };
-    });
-    await page.mouse.move(analytics.right + 100, analytics.middle);
+    await page.locator(".mark").hover();
+    // Pause the spin a quarter turn in, when the mark is first edge on and
+    // covers almost none of the space it rests in.
+    const fractions = Array.from({ length: 201 }, (_, i) => (i / 200) * 0.05);
+    const { angles } = (await markSpin(page, fractions))!;
+    const edgeOn = fractions[angles.findIndex((angle) => angle >= 90)];
+    await markSpin(page, [edgeOn]);
+    // The pointer comes back near the left edge of that space, where the
+    // mark would be if it were face on. A new spin replaces the paused one.
+    await page.mouse.move(0, 0);
+    await page.locator(".mark").hover({ position: { x: 1, y: 7 } });
+    expect(await markSpinning(page)).toBe(true);
+  });
+
+  test("keeps the mark still when the pointer is on the headline text", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    // The first word of the headline, well clear of the mark.
+    await page.locator(".headline").hover({ position: { x: 10, y: 10 } });
     expect(await markSpinning(page)).toBe(false);
   });
 
@@ -732,7 +743,7 @@ test.describe("motion", () => {
   }) => {
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto("/");
-    await page.locator(".headline").hover();
+    await page.locator(".mark").hover();
     expect(await markSpinning(page)).toBe(false);
   });
 });

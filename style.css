@@ -160,10 +160,7 @@ h1 {
   letter-spacing: -0.01em;
 }
 
-/* Only as wide as its text, so that hovering the space beside it does not
-   spin the mark. */
 .headline {
-  width: fit-content;
   margin: 0.6rem 0 0.8rem;
   color: var(--accent);
   font-family: var(--sans);
@@ -173,12 +170,19 @@ h1 {
   letter-spacing: 0.08em;
 }
 
-/* Rounded square with a cut-out plus, standing in for "+" in the headline. */
+/* Rounded square with a cut-out plus, standing in for "+" in the headline.
+   The box stays put, so the pointer can find it while the drawing inside
+   turns. */
 .mark {
+  display: inline-block;
   width: 1em;
   height: 1em;
   margin-inline: 0.1em;
   vertical-align: -0.15em;
+}
+
+.mark svg {
+  display: block;
 }
 
 .contact {
