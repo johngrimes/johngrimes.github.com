@@ -311,32 +311,22 @@ footer {
   list-style: none;
 }
 
-/* Dates sit on the baseline of the last line of text. */
 .ledger li {
   display: flex;
-  align-items: last baseline;
+  align-items: baseline;
   margin-bottom: 0.25em;
 }
 
-/* The padding guarantees a minimum leader; clipping trims it at the dates. */
-.ledger li > :first-child {
-  flex: 1;
-  padding-right: 2em;
-  overflow-x: clip;
-}
-
-/* A zero-net-width inline-block starts the leader where the text ends, even
-   on a wrapped last line, and runs it to the clip edge. */
-.ledger li > :first-child::after {
+.ledger li::after {
   content: "";
-  display: inline-block;
-  width: 100vw;
-  margin: 0 calc(-100vw - 0.5em) 0 0.5em;
+  flex: 1 0 1.5rem;
+  order: 1;
+  margin: 0 0.5em;
   border-bottom: 1px dotted var(--muted);
 }
 
 .ledger .dates {
-  margin-left: 0.5em;
+  order: 2;
 }
 
 /* Publications: hanging indents, titles in italic. */
